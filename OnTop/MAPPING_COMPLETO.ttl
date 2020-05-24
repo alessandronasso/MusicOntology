@@ -1,0 +1,518 @@
+@prefix rr:    <http://www.w3.org/ns/r2rml#> .
+@prefix :      <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology> .
+@prefix music_ontology: <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#> .
+@prefix obda:  <https://w3id.org/obda/vocabulary#> .
+@prefix ns:    <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix cpannotationschema: <http://www.ontologydesignpatterns.org/schemas/cpannotationschema.owl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix bag:   <http://www.ontologydesignpatterns.org/cp/owl/bag.owl#> .
+@prefix vann1: <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#vann:> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix collectionentity: <http://www.ontologydesignpatterns.org/cp/owl/collectionentity.owl#> .
+@prefix informationrealization: <http://www.ontologydesignpatterns.org/cp/owl/informationrealization.owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml:   <http://www.w3.org/XML/1998/namespace> .
+@prefix vann:  <http://purl.org/vocab/vann/> .
+@prefix wot:   <http://xmlns.com/wot/0.1/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+
+<urn:mapping--748769273>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "SELECT * FROM traccia_ha_genere JOIN genere ON id_genere = id"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:TermMap , rr:ObjectMap ;
+                                                 rr:column    "nome" ;
+                                                 rr:datatype  xsd:string ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:haGenere
+                               ] ;
+        rr:subjectMap          [ a            rr:TermMap , rr:SubjectMap ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Traccia{id_traccia}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping--2081807680_1>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "SELECT * FROM agent\nWHERE tipo = 'Solo'"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:column    "nome" ;
+                                                 rr:datatype  xsd:string ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:nome
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:column    "nazione" ;
+                                                 rr:datatype  xsd:string ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:nazione
+                               ] ;
+        rr:subjectMap          [ a            rr:SubjectMap , rr:TermMap ;
+                                 rr:class     music_ontology:Solo ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Solo{id}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping--1051221231_1>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "select `id`, `nome`, `tipo`, `nazione` from `tmo`.`agent` where tipo = 'Produttore'"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:TermMap , rr:ObjectMap ;
+                                                 rr:column    "nazione" ;
+                                                 rr:datatype  xsd:string ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:nazione
+                               ] ;
+        rr:subjectMap          [ a            rr:TermMap , rr:SubjectMap ;
+                                 rr:class     music_ontology:Produttore ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Produttore{id}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping-1395403263>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "select * FROM album_di_artista JOIN agent ON id_artista = id  WHERE tipo = 'Solo'"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Solo{id_artista}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:album_di
+                               ] ;
+        rr:subjectMap          [ a            rr:SubjectMap , rr:TermMap ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Album{id_album}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping--1224398244>
+        a                rr:TriplesMap ;
+        rr:logicalTable  [ a            rr:R2RMLView ;
+                           rr:sqlQuery  "SELECT * FROM Musicista"
+                         ] ;
+        rr:subjectMap    [ a            rr:SubjectMap , rr:TermMap ;
+                           rr:class     music_ontology:Musicista ;
+                           rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#{ruolo}" ;
+                           rr:termType  rr:IRI
+                         ] .
+
+<urn:mapping--278587831_1>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "select * from traccia"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Album{id_album}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:traccia_di_album
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:TermMap , rr:ObjectMap ;
+                                                 rr:column    "bpm" ;
+                                                 rr:datatype  xsd:integer ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:haBPM
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Canzone{id_canzone}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:traccia_realizza
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:TermMap , rr:ObjectMap ;
+                                                 rr:column    "durata" ;
+                                                 rr:datatype  xsd:nonNegativeInteger ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:haDurata
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:column    "nome" ;
+                                                 rr:datatype  xsd:string ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:titoloTraccia
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:TermMap , rr:ObjectMap ;
+                                                 rr:column    "scala" ;
+                                                 rr:datatype  xsd:string ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:haScala
+                               ] ;
+        rr:subjectMap          [ a            rr:TermMap , rr:SubjectMap ;
+                                 rr:class     music_ontology:Traccia ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Traccia{id}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping-756475048>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "select * FROM autore_performa_traccia JOIN agent ON id_autore = id WHERE tipo = 'Solo'"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:TermMap , rr:ObjectMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Solo{id_autore}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:performata_da
+                               ] ;
+        rr:subjectMap          [ a            rr:TermMap , rr:SubjectMap ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Traccia{id_traccia}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping-1954761790_1>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "SELECT * FROM agent\nWHERE tipo = 'Artista'"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:column    "nome" ;
+                                                 rr:datatype  xsd:string ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:nome
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:column    "nazione" ;
+                                                 rr:datatype  xsd:string ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:nazione
+                               ] ;
+        rr:subjectMap          [ a            rr:SubjectMap , rr:TermMap ;
+                                 rr:class     music_ontology:Artista ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Artista{id}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping--242668667>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "select * from featuring_traccia JOIN agent ON id_artista = id WHERE tipo = 'Solo'"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Solo{id_artista}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:ha_featuring
+                               ] ;
+        rr:subjectMap          [ a            rr:SubjectMap , rr:TermMap ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Traccia{id_traccia}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping--74011821_1>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "select `id`, `id_traccia`, `id_produttore` from `tmo`.`recording`"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Produttore{id_produttore}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:ha_produttore
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Traccia{id_traccia}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:registra
+                               ] ;
+        rr:subjectMap          [ a            rr:SubjectMap , rr:TermMap ;
+                                 rr:class     music_ontology:Recording ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Recording{id}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping--2019922676>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "select * FROM autore_performa_traccia JOIN agent ON id_autore = id WHERE tipo = 'Gruppo'"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Gruppo{id_autore}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:performata_da
+                               ] ;
+        rr:subjectMap          [ a            rr:TermMap , rr:SubjectMap ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Traccia{id_traccia}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping--183733355>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "SELECT * FROM featuring_traccia JOIN agent ON id_artista = id WHERE tipo = 'Gruppo'"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Gruppo{id_artista}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:ha_featuring
+                               ] ;
+        rr:subjectMap          [ a            rr:SubjectMap , rr:TermMap ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Traccia{id_traccia}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping-455361555_1>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "SELECT artista_partecipa.id AS id, artista_partecipa.id_artista, ruolo, id_gruppo FROM artista_partecipa JOIN membro_di_gruppo ON artista_partecipa.id = membro_di_gruppo.id JOIN agent ON artista_partecipa.id_artista = agent.id  JOIN musicista ON id_ruolo = musicista.id WHERE agent.tipo = 'Artista'"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:TermMap , rr:ObjectMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Artista{id_artista}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:artistaPartecipanteGruppo
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Gruppo{id_gruppo}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:gruppoPartecipante
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#{ruolo}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:ruoloArtistaPartecipanteGruppo
+                               ] ;
+        rr:subjectMap          [ a            rr:SubjectMap , rr:TermMap ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#MembroGruppo{id}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping--1727682590>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "SELECT id_release, nome FROM `release_ha_supporto` JOIN supporto ON id_supporto = id"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:column    "nome" ;
+                                                 rr:datatype  xsd:string ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:haSupporto
+                               ] ;
+        rr:subjectMap          [ a            rr:TermMap , rr:SubjectMap ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Release{id_release}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping--958687241_1>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "SELECT * FROM release"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:column    "data" ;
+                                                 rr:datatype  xsd:date ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:data
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#CasaDiscografica{id}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:pubblicata_da
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:column    "titolo" ;
+                                                 rr:datatype  xsd:string ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:nomeRelease
+                               ] ;
+        rr:subjectMap          [ a            rr:TermMap , rr:SubjectMap ;
+                                 rr:class     music_ontology:Release ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Release{id}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping--1841383440_1>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "SELECT * FROM album"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:column    "titolo" ;
+                                                 rr:datatype  xsd:string ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:haTitolo
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:TermMap , rr:ObjectMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Release{id_release}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:pubblicato_in
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:column    "numeroTracce" ;
+                                                 rr:datatype  xsd:integer ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:numeroTracce
+                               ] ;
+        rr:subjectMap          [ a            rr:SubjectMap , rr:TermMap ;
+                                 rr:class     music_ontology:Album ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Album{id}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping--282745548_1>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "SELECT * FROM Casadiscografica"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:column    "nome" ;
+                                                 rr:datatype  xsd:string ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:nome_casaDiscografica
+                               ] ;
+        rr:subjectMap          [ a            rr:SubjectMap , rr:TermMap ;
+                                 rr:class     music_ontology:CasaDiscografica ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#CasaDiscografica{id}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping--1577048254>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "select * FROM album_di_artista JOIN agent ON id_artista = id  WHERE tipo = 'Gruppo'"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Gruppo{id_artista}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:album_di
+                               ] ;
+        rr:subjectMap          [ a            rr:TermMap , rr:SubjectMap ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Album{id_album}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping--468341346_1>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "select `id`, `nome`, `tipo`, `nazione` from `tmo`.`agent`\nwhere tipo ='Gruppo'"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:column    "nazione" ;
+                                                 rr:datatype  xsd:string ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:nazione
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:column    "nome" ;
+                                                 rr:datatype  xsd:string ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:nome
+                               ] ;
+        rr:subjectMap          [ a            rr:TermMap , rr:SubjectMap ;
+                                 rr:class     music_ontology:Gruppo ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Gruppo{id}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping--1718426346_1>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "SELECT artista_partecipa.id AS id, artista_partecipa.id_artista, ruolo, id_gruppo FROM artista_partecipa JOIN membro_di_gruppo ON artista_partecipa.id = membro_di_gruppo.id JOIN agent ON artista_partecipa.id_artista = agent.id  JOIN musicista ON id_ruolo = musicista.id WHERE agent.tipo = 'Solo'"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Solo{id_artista}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:artistaPartecipanteGruppo
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#{ruolo}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:ruoloArtistaPartecipanteGruppo
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:ObjectMap , rr:TermMap ;
+                                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Gruppo{id_gruppo}" ;
+                                                 rr:termType  rr:IRI
+                                               ] ;
+                                 rr:predicate  music_ontology:gruppoPartecipante
+                               ] ;
+        rr:subjectMap          [ a            rr:SubjectMap , rr:TermMap ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#MembroGruppo{id}" ;
+                                 rr:termType  rr:IRI
+                               ] .
+
+<urn:mapping--710224553_1>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ a            rr:R2RMLView ;
+                                 rr:sqlQuery  "SELECT * FROM Canzone"
+                               ] ;
+        rr:predicateObjectMap  [ a             rr:PredicateObjectMap ;
+                                 rr:objectMap  [ a            rr:TermMap , rr:ObjectMap ;
+                                                 rr:column    "nome" ;
+                                                 rr:datatype  xsd:string ;
+                                                 rr:termType  rr:Literal
+                                               ] ;
+                                 rr:predicate  music_ontology:titoloCanzone
+                               ] ;
+        rr:subjectMap          [ a            rr:SubjectMap , rr:TermMap ;
+                                 rr:class     music_ontology:Canzone ;
+                                 rr:template  "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Canzone{id}" ;
+                                 rr:termType  rr:IRI
+                               ] .

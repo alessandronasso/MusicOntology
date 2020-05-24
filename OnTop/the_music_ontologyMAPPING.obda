@@ -1,0 +1,109 @@
+[PrefixDeclaration]
+:		http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology
+dc:		http://purl.org/dc/elements/1.1/
+ns:		http://www.w3.org/2003/06/sw-vocab-status/ns#
+bag:		http://www.ontologydesignpatterns.org/cp/owl/bag.owl#
+owl:		http://www.w3.org/2002/07/owl#
+rdf:		http://www.w3.org/1999/02/22-rdf-syntax-ns#
+wot:		http://xmlns.com/wot/0.1/
+xml:		http://www.w3.org/XML/1998/namespace
+xsd:		http://www.w3.org/2001/XMLSchema#
+foaf:		http://xmlns.com/foaf/0.1/
+obda:		https://w3id.org/obda/vocabulary#
+rdfs:		http://www.w3.org/2000/01/rdf-schema#
+vann:		http://purl.org/vocab/vann/
+vann1:		http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#vann:
+music_ontology:	http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#
+collectionentity:	http://www.ontologydesignpatterns.org/cp/owl/collectionentity.owl#
+cpannotationschema:	http://www.ontologydesignpatterns.org/schemas/cpannotationschema.owl#
+informationrealization:	http://www.ontologydesignpatterns.org/cp/owl/informationrealization.owl#
+
+[MappingDeclaration] @collection [[
+mappingId	mapping-756475048
+target		music_ontology:Traccia{id_traccia} music_ontology:performata_da music_ontology:Solo{id_autore} . 
+source		select * FROM autore_performa_traccia JOIN agent ON id_autore = id WHERE tipo = 'Solo'
+
+mappingId	mapping--748769273
+target		music_ontology:Traccia{id_traccia} music_ontology:haGenere {nome}^^xsd:string . 
+source		SELECT * FROM traccia_ha_genere JOIN genere ON id_genere = id
+
+mappingId	mapping--282745548
+target		music_ontology:CasaDiscografica{id} a music_ontology:CasaDiscografica ; music_ontology:nome_casaDiscografica {nome}^^xsd:string . 
+source		SELECT * FROM Casadiscografica
+
+mappingId	mapping--2081807680
+target		music_ontology:Solo{id} a music_ontology:Solo ; music_ontology:nazione {nazione}^^xsd:string ; music_ontology:nome {nome}^^xsd:string . 
+source		SELECT * FROM agent
+			WHERE tipo = 'Solo'
+
+mappingId	mapping--2019922676
+target		music_ontology:Traccia{id_traccia} music_ontology:performata_da music_ontology:Gruppo{id_autore} . 
+source		select * FROM autore_performa_traccia JOIN agent ON id_autore = id WHERE tipo = 'Gruppo'
+
+mappingId	mapping--468341346
+target		music_ontology:Gruppo{id} a music_ontology:Gruppo ; music_ontology:nome {nome}^^xsd:string ; music_ontology:nazione {nazione}^^xsd:string . 
+source		select `id`, `nome`, `tipo`, `nazione` from `tmo`.`agent`
+			where tipo ='Gruppo'
+
+mappingId	mapping--1577048254
+target		music_ontology:Album{id_album} music_ontology:album_di music_ontology:Gruppo{id_artista} . 
+source		select * FROM album_di_artista JOIN agent ON id_artista = id  WHERE tipo = 'Gruppo'
+
+mappingId	mapping--242668667
+target		music_ontology:Traccia{id_traccia} music_ontology:ha_featuring music_ontology:Solo{id_artista} . 
+source		select * from featuring_traccia JOIN agent ON id_artista = id WHERE tipo = 'Solo'
+
+mappingId	mapping--1727682590
+target		music_ontology:Release{id_release} music_ontology:haSupporto {nome}^^xsd:string . 
+source		SELECT id_release, nome FROM `release_ha_supporto` JOIN supporto ON id_supporto = id
+
+mappingId	mapping--278587831
+target		music_ontology:Traccia{id} a music_ontology:Traccia ; music_ontology:haBPM {bpm}^^xsd:integer ; music_ontology:traccia_di_album music_ontology:Album{id_album} ; music_ontology:titoloTraccia {nome}^^xsd:string ; music_ontology:haDurata {durata}^^xsd:nonNegativeInteger ; music_ontology:traccia_realizza music_ontology:Canzone{id_canzone} ; music_ontology:haScala {scala}^^xsd:string . 
+source		select * from traccia
+
+mappingId	mapping--958687241
+target		music_ontology:Release{id} a music_ontology:Release ; music_ontology:nomeRelease {titolo}^^xsd:string ; music_ontology:pubblicata_da music_ontology:CasaDiscografica{id} ; music_ontology:data {data}^^xsd:date . 
+source		SELECT * FROM release
+
+mappingId	mapping--183733355
+target		music_ontology:Traccia{id_traccia} music_ontology:ha_featuring music_ontology:Gruppo{id_artista} . 
+source		SELECT * FROM featuring_traccia JOIN agent ON id_artista = id WHERE tipo = 'Gruppo'
+
+mappingId	mapping--1718426346
+target		music_ontology:MembroGruppo{id} music_ontology:ruoloArtistaPartecipanteGruppo music_ontology:{ruolo} ; music_ontology:artistaPartecipanteGruppo music_ontology:Solo{id_artista} ; music_ontology:gruppoPartecipante music_ontology:Gruppo{id_gruppo} . 
+source		SELECT artista_partecipa.id AS id, artista_partecipa.id_artista, ruolo, id_gruppo FROM artista_partecipa JOIN membro_di_gruppo ON artista_partecipa.id = membro_di_gruppo.id JOIN agent ON artista_partecipa.id_artista = agent.id  JOIN musicista ON id_ruolo = musicista.id WHERE agent.tipo = 'Solo'
+
+mappingId	mapping-1954761790
+target		music_ontology:Artista{id} a music_ontology:Artista ; music_ontology:nazione {nazione}^^xsd:string ; music_ontology:nome {nome}^^xsd:string . 
+source		SELECT * FROM agent
+			WHERE tipo = 'Artista'
+
+mappingId	mapping--1841383440
+target		music_ontology:Album{id} a music_ontology:Album ; music_ontology:pubblicato_in music_ontology:Release{id_release} ; music_ontology:haTitolo {titolo}^^xsd:string ; music_ontology:numeroTracce {numeroTracce}^^xsd:integer . 
+source		SELECT * FROM album
+
+mappingId	mapping--1224398244
+target		music_ontology:{ruolo} a music_ontology:Musicista . 
+source		SELECT * FROM Musicista
+
+mappingId	mapping--710224553
+target		music_ontology:Canzone{id} a music_ontology:Canzone ; music_ontology:titoloCanzone {nome}^^xsd:string . 
+source		SELECT * FROM Canzone
+
+mappingId	mapping--74011821
+target		music_ontology:Recording{id} a music_ontology:Release ; music_ontology:registra music_ontology:Traccia{id_traccia} ; music_ontology:ha_produttore music_ontology:Produttore{id_produttore} . 
+source		select `id`, `id_traccia`, `id_produttore` from `tmo`.`recording`
+
+mappingId	mapping-455361555
+target		music_ontology:MembroGruppo{id} music_ontology:ruoloArtistaPartecipanteGruppo music_ontology:{ruolo} ; music_ontology:gruppoPartecipante music_ontology:Gruppo{id_gruppo} ; music_ontology:artistaPartecipanteGruppo music_ontology:Artista{id_artista} . 
+source		SELECT artista_partecipa.id AS id, artista_partecipa.id_artista, ruolo, id_gruppo FROM artista_partecipa JOIN membro_di_gruppo ON artista_partecipa.id = membro_di_gruppo.id JOIN agent ON artista_partecipa.id_artista = agent.id  JOIN musicista ON id_ruolo = musicista.id WHERE agent.tipo = 'Artista'
+
+mappingId	mapping--1051221231
+target		music_ontology:Produttore{id} a music_ontology:Produttore ; music_ontology:nazione {nazione}^^xsd:string . 
+source		select `id`, `nome`, `tipo`, `nazione` from `tmo`.`agent` where tipo = 'Produttore'
+
+mappingId	mapping-1395403263
+target		music_ontology:Album{id_album} music_ontology:album_di music_ontology:Solo{id_artista} . 
+source		select * FROM album_di_artista JOIN agent ON id_artista = id  WHERE tipo = 'Solo'
+]]
+

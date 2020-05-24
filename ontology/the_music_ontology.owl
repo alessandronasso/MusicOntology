@@ -1,0 +1,2239 @@
+@prefix : <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix ns: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix bag: <http://www.ontologydesignpatterns.org/cp/owl/bag.owl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix wot: <http://xmlns.com/wot/0.1/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix obda: <https://w3id.org/obda/vocabulary#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix vann1: <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#vann:> .
+@prefix music_ontology: <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#> .
+@prefix collectionentity: <http://www.ontologydesignpatterns.org/cp/owl/collectionentity.owl#> .
+@prefix cpannotationschema: <http://www.ontologydesignpatterns.org/schemas/cpannotationschema.owl#> .
+@prefix informationrealization: <http://www.ontologydesignpatterns.org/cp/owl/informationrealization.owl#> .
+@base <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology> .
+
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology> rdf:type owl:Ontology ;
+                                                                     owl:imports <http://www.ontologydesignpatterns.org/cp/owl/informationrealization.owl> ,
+                                                                                 <http://www.ontologydesignpatterns.org/cp/owl/list.owl> ,
+                                                                                 foaf: ;
+                                                                     dc:creator "Alessandro Nasso"^^xsd:string ,
+                                                                                "Bruno Lopardo"^^xsd:string ;
+                                                                     dc:date "11/02/2020"^^xsd:date ;
+                                                                     dc:description "Ontologia si propone di modellare il dominio relativo all'industria musicale, pernettendo un'analisi delle relazioni tra prodotti musicali come release, album, tracce e le persone che vi hanno lavorato, quali musticsti, prodotuttori ed editori."^^xsd:string ;
+                                                                     dc:title "A music ontology"^^xsd:string ;
+                                                                     vann:preferredNamespacePrefix "tmo"^^xsd:string ;
+                                                                     vann:preferredNamespaceUri "http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology"^^xsd:anyURI ;
+                                                                     rdfs:label "Music Ontology"^^xsd:string .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/elements/1.1/creator
+dc:creator rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespacePrefix
+vann:preferredNamespacePrefix rdf:type owl:AnnotationProperty ;
+                              rdfs:subPropertyOf vann1:preferredNamespacePrefix .
+
+
+###  http://purl.org/vocab/vann/preferredNamespaceUri
+vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#vann:preferredNamespacePrefix
+vann1:preferredNamespacePrefix rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Datatypes
+#################################################################
+
+###  http://www.w3.org/2001/XMLSchema#date
+xsd:date rdf:type rdfs:Datatype .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#album_di
+music_ontology:album_di rdf:type owl:ObjectProperty ;
+                        owl:inverseOf music_ontology:ha_album ;
+                        rdfs:domain music_ontology:Album ;
+                        rdfs:range [ rdf:type owl:Class ;
+                                     owl:unionOf ( music_ontology:Gruppo
+                                                   music_ontology:Solo
+                                                 )
+                                   ] ;
+                        rdfs:comment "Relazione che indica a quale artista appartiene un certo album"@it ;
+                        rdfs:label "album_di"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#album_ha_traccia
+music_ontology:album_ha_traccia rdf:type owl:ObjectProperty ;
+                                rdfs:subPropertyOf bag:hasItem ;
+                                owl:inverseOf music_ontology:traccia_di_album ;
+                                rdfs:domain music_ontology:Album ;
+                                rdfs:range music_ontology:Traccia ;
+                                rdfs:comment "Relazione che indica quale traccia appartiene all'album"@it ;
+                                rdfs:label "album_ha_traccia"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#artistaPartecipanteGruppo
+music_ontology:artistaPartecipanteGruppo rdf:type owl:ObjectProperty ;
+                                         rdfs:domain music_ontology:RuoloComponenteNelGruppo ;
+                                         rdfs:range music_ontology:Artista ;
+                                         rdfs:comment "Artista che partecipa ad un gruppo"@it ;
+                                         rdfs:label "artista che partecipa ad un gruppo"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#canzone_realizzata_da
+music_ontology:canzone_realizzata_da rdf:type owl:ObjectProperty ;
+                                     rdfs:subPropertyOf informationrealization:isRealizedBy ;
+                                     owl:inverseOf music_ontology:traccia_realizza ;
+                                     rdfs:domain music_ontology:Canzone ;
+                                     rdfs:range music_ontology:Traccia ;
+                                     rdfs:comment "Relazione che indica quale canzone realizza la traccia"@it ;
+                                     rdfs:label "canzone_realizzata_da"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#compostaDa
+music_ontology:compostaDa rdf:type owl:ObjectProperty ;
+                          rdfs:domain music_ontology:Canzone ;
+                          rdfs:range music_ontology:Compositore ;
+                          rdfs:comment "Relazione che lega la canzone con il suo compositore"@it ;
+                          rdfs:label "composta da"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#contiene
+music_ontology:contiene rdf:type owl:ObjectProperty ;
+                        owl:inverseOf music_ontology:pubblicato_in ;
+                        rdfs:domain music_ontology:Release ;
+                        rdfs:range [ rdf:type owl:Class ;
+                                     owl:unionOf ( music_ontology:Album
+                                                   music_ontology:Traccia
+                                                 )
+                                   ] ;
+                        rdfs:comment "Relazione che indica quale album o traccia musicale (singolo) contiene una release"@it ;
+                        rdfs:label "contiene"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#featured
+music_ontology:featured rdf:type owl:ObjectProperty ;
+                        owl:inverseOf music_ontology:ha_featuring ;
+                        rdfs:domain [ rdf:type owl:Class ;
+                                      owl:unionOf ( music_ontology:Gruppo
+                                                    music_ontology:Solo
+                                                  )
+                                    ] ;
+                        rdfs:range music_ontology:Traccia ;
+                        rdfs:comment "Relazione che indica che un certo gruppo o solista ha partecipato come featuring ad una traccia musicale"@it ;
+                        rdfs:label "featured"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#gruppoPartecipante
+music_ontology:gruppoPartecipante rdf:type owl:ObjectProperty ;
+                                  rdfs:domain music_ontology:RuoloComponenteNelGruppo ;
+                                  rdfs:range music_ontology:Gruppo ;
+                                  rdfs:comment "Gruppo del partecipante"@it ;
+                                  rdfs:label "gruppo partecipante"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#gruppo_ha_membro
+music_ontology:gruppo_ha_membro rdf:type owl:ObjectProperty ;
+                                rdfs:subPropertyOf collectionentity:hasMember ;
+                                owl:inverseOf music_ontology:membro_di_gruppo ;
+                                rdfs:domain music_ontology:Gruppo ;
+                                rdfs:range music_ontology:Artista ;
+                                owl:propertyChainAxiom ( [ owl:inverseOf music_ontology:gruppoPartecipante
+                                                         ]
+                                                         music_ontology:artistaPartecipanteGruppo
+                                                       ) ;
+                                rdfs:comment "Relazione che indica quale artista fa parte del gruppo"@it ;
+                                rdfs:label "gruppo_ha_membro"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#haCollaborato
+music_ontology:haCollaborato rdf:type owl:ObjectProperty ;
+                             rdfs:domain [ rdf:type owl:Class ;
+                                           owl:unionOf ( music_ontology:Artista
+                                                         music_ontology:Gruppo
+                                                       )
+                                         ] ;
+                             rdfs:range [ rdf:type owl:Class ;
+                                          owl:unionOf ( music_ontology:Artista
+                                                        music_ontology:Gruppo
+                                                      )
+                                        ] ;
+                             owl:propertyChainAxiom ( music_ontology:ha_featuring
+                                                      music_ontology:performata_da
+                                                    ) ;
+                             rdfs:comment "Relazione che lega due artisti che hanno effettuato una collaborazione"@it ;
+                             rdfs:label "ha collaborato"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#ha_album
+music_ontology:ha_album rdf:type owl:ObjectProperty ;
+                        rdfs:domain [ rdf:type owl:Class ;
+                                      owl:unionOf ( music_ontology:Gruppo
+                                                    music_ontology:Solo
+                                                  )
+                                    ] ;
+                        rdfs:range music_ontology:Album ;
+                        rdfs:comment "Relazione che indica che un certo album appartiene ad un certo artista"@it ;
+                        rdfs:label "ha_album"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#ha_contrattato
+music_ontology:ha_contrattato rdf:type owl:ObjectProperty ;
+                              owl:inverseOf music_ontology:ha_etichetta ;
+                              rdfs:domain music_ontology:CasaDiscografica ;
+                              rdfs:range [ rdf:type owl:Class ;
+                                           owl:unionOf ( music_ontology:Gruppo
+                                                         music_ontology:Solo
+                                                       )
+                                         ] ;
+                              rdfs:comment "Relazione che indica quali artisti ha sotto contratto la casa discografica"@it ;
+                              rdfs:label "ha_contrattato"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#ha_dipendente
+music_ontology:ha_dipendente rdf:type owl:ObjectProperty ;
+                             rdfs:domain music_ontology:CasaDiscografica ;
+                             rdfs:comment "Relazione che indica quale editore lavora per la casa discografica"@it ;
+                             rdfs:label "ha_dipendente"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#ha_etichetta
+music_ontology:ha_etichetta rdf:type owl:ObjectProperty ;
+                            rdfs:domain [ rdf:type owl:Class ;
+                                          owl:unionOf ( music_ontology:Gruppo
+                                                        music_ontology:Solo
+                                                      )
+                                        ] ;
+                            rdfs:range music_ontology:CasaDiscografica ;
+                            rdfs:comment "Relazione che indica quale etichetta ha l'artista"@it ;
+                            rdfs:label "ha_etichetta"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#ha_featuring
+music_ontology:ha_featuring rdf:type owl:ObjectProperty ;
+                            rdfs:domain music_ontology:Traccia ;
+                            rdfs:range [ rdf:type owl:Class ;
+                                         owl:unionOf ( music_ontology:Gruppo
+                                                       music_ontology:Solo
+                                                     )
+                                       ] ;
+                            rdfs:comment "Relazione che indica che una certa traccia ha un certo artista come ft."@it ;
+                            rdfs:label "ha_featuring"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#ha_produttore
+music_ontology:ha_produttore rdf:type owl:ObjectProperty ;
+                             rdfs:domain music_ontology:Produttore ;
+                             rdfs:range music_ontology:Recording ;
+                             rdfs:comment "Relazione che indica quale produttore ha partecipato ad un recording"@it ;
+                             rdfs:label "ha produttore"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#membro_di_gruppo
+music_ontology:membro_di_gruppo rdf:type owl:ObjectProperty ;
+                                rdfs:subPropertyOf collectionentity:isMemberOf ;
+                                rdfs:domain music_ontology:Artista ;
+                                rdfs:range music_ontology:Gruppo ;
+                                owl:propertyChainAxiom ( [ owl:inverseOf music_ontology:artistaPartecipanteGruppo
+                                                         ]
+                                                         music_ontology:gruppoPartecipante
+                                                       ) ;
+                                rdfs:comment "Relazione che indica a quale gruppo appartiene un artista"@it ;
+                                rdfs:label "membro_di_gruppo"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#nuova_release_di
+music_ontology:nuova_release_di rdf:type owl:ObjectProperty ,
+                                         owl:TransitiveProperty ;
+                                rdfs:domain music_ontology:Release ;
+                                rdfs:range music_ontology:Release ;
+                                rdfs:comment "Nuova versione di una release precedente"@it ;
+                                rdfs:label "nuova_release_di"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#performa
+music_ontology:performa rdf:type owl:ObjectProperty ;
+                        owl:inverseOf music_ontology:performata_da ;
+                        rdfs:domain [ rdf:type owl:Class ;
+                                      owl:unionOf ( music_ontology:Gruppo
+                                                    music_ontology:Solo
+                                                  )
+                                    ] ;
+                        rdfs:range music_ontology:Traccia ;
+                        owl:propertyChainAxiom ( music_ontology:ha_album
+                                                 music_ontology:album_ha_traccia
+                                               ) ;
+                        rdfs:comment "Relazione che indica quale artista ha realizzato la traccia musicale"@it ;
+                        rdfs:label "performa"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#performata_da
+music_ontology:performata_da rdf:type owl:ObjectProperty ;
+                             rdfs:domain music_ontology:Traccia ;
+                             rdfs:range [ rdf:type owl:Class ;
+                                          owl:unionOf ( music_ontology:Gruppo
+                                                        music_ontology:Solo
+                                                      )
+                                        ] ;
+                             rdfs:comment "Relazione che indica quale artista ha realizzato una traccia musicale"@it ;
+                             rdfs:label "performata_da"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#pubblica
+music_ontology:pubblica rdf:type owl:ObjectProperty ;
+                        owl:inverseOf music_ontology:pubblicata_da ;
+                        rdfs:domain music_ontology:CasaDiscografica ;
+                        rdfs:range music_ontology:Release ;
+                        rdfs:comment "Relazione che indica quale casa discografica ha pubblicato una release"@it ;
+                        rdfs:label "pubblica"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#pubblicata_da
+music_ontology:pubblicata_da rdf:type owl:ObjectProperty ;
+                             rdfs:domain music_ontology:Release ;
+                             rdfs:range music_ontology:CasaDiscografica ;
+                             rdfs:comment "Relazione che indica quale casa discografica ha pubblicato una certa release"@it ;
+                             rdfs:label "pubblicata_da"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#pubblicato_in
+music_ontology:pubblicato_in rdf:type owl:ObjectProperty ;
+                             rdfs:domain [ rdf:type owl:Class ;
+                                           owl:unionOf ( music_ontology:Album
+                                                         music_ontology:Traccia
+                                                       )
+                                         ] ;
+                             rdfs:range music_ontology:Release ;
+                             rdfs:comment "Relazione che indica in quale release è stato pubblicato un album o una traccia musicale"@it ;
+                             rdfs:label "pubblicato_in"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#registra
+music_ontology:registra rdf:type owl:ObjectProperty ;
+                        owl:inverseOf music_ontology:registrata_in ;
+                        rdf:type owl:InverseFunctionalProperty ;
+                        rdfs:domain music_ontology:Recording ;
+                        rdfs:range music_ontology:Traccia ;
+                        rdfs:comment "Relazione che indica quale traccia musicale è stata reigstrata in un recording"@it ;
+                        rdfs:label "registra"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#registrata_in
+music_ontology:registrata_in rdf:type owl:ObjectProperty ,
+                                      owl:FunctionalProperty ;
+                             rdfs:domain music_ontology:Traccia ;
+                             rdfs:range music_ontology:Recording ;
+                             rdfs:comment "Relazione che indica in quale recording è stata registrata una traccia"@it ;
+                             rdfs:label "registrata in"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#ruoloArtistaPartecipanteGruppo
+music_ontology:ruoloArtistaPartecipanteGruppo rdf:type owl:ObjectProperty ;
+                                              rdfs:domain music_ontology:RuoloComponenteNelGruppo ;
+                                              rdfs:range music_ontology:Musicista ;
+                                              rdfs:comment "Ruolo dell'artista partecipante al gruppo" ;
+                                              rdfs:label "ruolo artista che partecipa ad un gruppo"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#scrittaDa
+music_ontology:scrittaDa rdf:type owl:ObjectProperty ;
+                         rdfs:domain music_ontology:Canzone ;
+                         rdfs:range music_ontology:Scrittore ;
+                         rdfs:comment "Relazione che lega la canzone con il suo scrittore"@it ;
+                         rdfs:label "scritta da"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#traccia_di_album
+music_ontology:traccia_di_album rdf:type owl:ObjectProperty ;
+                                rdfs:subPropertyOf bag:itemOf ;
+                                rdf:type owl:FunctionalProperty ;
+                                rdfs:domain music_ontology:Traccia ;
+                                rdfs:range music_ontology:Album ;
+                                rdfs:label "Relazione che indica a quale album appartiene una traccia"@it ,
+                                           "traccia_di_album"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#traccia_precedente
+music_ontology:traccia_precedente rdf:type owl:ObjectProperty ,
+                                           owl:FunctionalProperty ;
+                                  rdfs:domain music_ontology:Traccia ;
+                                  rdfs:range music_ontology:Traccia ;
+                                  rdfs:label "Relazione che indica qual è la traccia precedente in un album"@it ,
+                                             "traccia_precedente"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#traccia_realizza
+music_ontology:traccia_realizza rdf:type owl:ObjectProperty ;
+                                rdfs:subPropertyOf informationrealization:realizes ;
+                                rdfs:domain music_ontology:Traccia ;
+                                rdfs:range music_ontology:Canzone ;
+                                rdfs:comment "Relazione che indica quale canzone è stata realizzata da una certa traccia musicale"@it ;
+                                rdfs:label "traccia_realizza"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#traccia_successiva
+music_ontology:traccia_successiva rdf:type owl:ObjectProperty ,
+                                           owl:FunctionalProperty ;
+                                  rdfs:domain music_ontology:Traccia ;
+                                  rdfs:range music_ontology:Traccia ;
+                                  rdfs:comment "Relazione che lega una traccia con il suo successore nell'album musicale"@it ;
+                                  rdfs:label "traccia successiva"@it .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#data
+music_ontology:data rdf:type owl:DatatypeProperty ;
+                    rdfs:domain music_ontology:Release ;
+                    rdfs:range xsd:date ;
+                    rdfs:comment "Data di pubblicazione di una certa release"@it ;
+                    rdfs:label "data"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#haBPM
+music_ontology:haBPM rdf:type owl:DatatypeProperty ;
+                     rdfs:domain music_ontology:Traccia ;
+                     rdfs:range xsd:integer ;
+                     rdfs:comment "Battiti per minuto di una traccia musicale"@it ;
+                     rdfs:label "haBPM"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#haDurata
+music_ontology:haDurata rdf:type owl:DatatypeProperty ;
+                        rdfs:domain music_ontology:Traccia ;
+                        rdfs:range xsd:nonNegativeInteger ;
+                        rdfs:comment "Durata di una certa traccia musicale"@it ;
+                        rdfs:label "durata traccia"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#haGenere
+music_ontology:haGenere rdf:type owl:DatatypeProperty ;
+                        rdfs:domain music_ontology:Traccia ;
+                        rdfs:range [ rdf:type rdfs:Datatype ;
+                                     owl:oneOf [ rdf:type rdf:List ;
+                                                 rdf:first "Classica" ;
+                                                 rdf:rest [ rdf:type rdf:List ;
+                                                            rdf:first "Indie" ;
+                                                            rdf:rest [ rdf:type rdf:List ;
+                                                                       rdf:first "Jazz" ;
+                                                                       rdf:rest [ rdf:type rdf:List ;
+                                                                                  rdf:first "Pop" ;
+                                                                                  rdf:rest [ rdf:type rdf:List ;
+                                                                                             rdf:first "Rock" ;
+                                                                                             rdf:rest rdf:nil
+                                                                                           ]
+                                                                                ]
+                                                                     ]
+                                                          ]
+                                               ]
+                                   ] ;
+                        rdfs:comment "Genere di una traccia musicale"@it ;
+                        rdfs:label "haGenere"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#haScala
+music_ontology:haScala rdf:type owl:DatatypeProperty ;
+                       rdfs:domain music_ontology:Traccia ;
+                       rdfs:range [ rdf:type rdfs:Datatype ;
+                                    owl:oneOf [ rdf:type rdf:List ;
+                                                rdf:first "Maggiore" ;
+                                                rdf:rest [ rdf:type rdf:List ;
+                                                           rdf:first "Minore" ;
+                                                           rdf:rest rdf:nil
+                                                         ]
+                                              ]
+                                  ] ;
+                       rdfs:comment "Scala musicale di una traccia musicale"@it ;
+                       rdfs:label "haScala"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#haSupporto
+music_ontology:haSupporto rdf:type owl:DatatypeProperty ;
+                          rdfs:domain music_ontology:Release ;
+                          rdfs:range [ rdf:type rdfs:Datatype ;
+                                       owl:oneOf [ rdf:type rdf:List ;
+                                                   rdf:first "CD" ;
+                                                   rdf:rest [ rdf:type rdf:List ;
+                                                              rdf:first "Digitale" ;
+                                                              rdf:rest [ rdf:type rdf:List ;
+                                                                         rdf:first "Vinile" ;
+                                                                         rdf:rest rdf:nil
+                                                                       ]
+                                                            ]
+                                                 ]
+                                     ] ;
+                          rdfs:comment "Supporto di memorizzazione di una release"@it ;
+                          rdfs:label "haSupporto"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#haTitolo
+music_ontology:haTitolo rdf:type owl:DatatypeProperty ;
+                        rdfs:domain music_ontology:Album ;
+                        rdfs:range xsd:string ;
+                        rdfs:comment "Titolo di un certo album"@it ;
+                        rdfs:label "titolo album"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#nazione
+music_ontology:nazione rdf:type owl:DatatypeProperty ;
+                       rdfs:domain foaf:Agent ;
+                       rdfs:range xsd:string ;
+                       rdfs:comment "Stato a cui appartiene un individuo"@it ;
+                       rdfs:label "Nazione"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#nome
+music_ontology:nome rdf:type owl:DatatypeProperty ;
+                    rdfs:subPropertyOf foaf:name ;
+                    rdfs:domain foaf:Agent ;
+                    rdfs:range xsd:string ;
+                    rdfs:comment "Nome di una persona"@it ;
+                    rdfs:label "nome"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#nomeRelease
+music_ontology:nomeRelease rdf:type owl:DatatypeProperty ;
+                           rdfs:domain music_ontology:Release ;
+                           rdfs:range xsd:string ;
+                           rdfs:comment "Nome di una certa release"@it ;
+                           rdfs:label "nomeRelease"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#nome_casaDiscografica
+music_ontology:nome_casaDiscografica rdf:type owl:DatatypeProperty ;
+                                     rdfs:domain music_ontology:CasaDiscografica ;
+                                     rdfs:range xsd:string ;
+                                     rdfs:comment "Nome di una certa casa discografica"@it ;
+                                     rdfs:label "nome_casaDiscografica"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#numeroTracce
+music_ontology:numeroTracce rdf:type owl:DatatypeProperty ;
+                            rdfs:subPropertyOf bag:size ;
+                            rdfs:domain music_ontology:Album ;
+                            rdfs:range xsd:integer ;
+                            rdfs:comment "Numero di tracce contenuto in un certo album"@it ;
+                            rdfs:label "numeroTracce"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#titoloCanzone
+music_ontology:titoloCanzone rdf:type owl:DatatypeProperty ;
+                             rdfs:comment "Titolo della canzone"@it ;
+                             rdfs:label "titoloCanzone"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#titoloTraccia
+music_ontology:titoloTraccia rdf:type owl:DatatypeProperty ;
+                             rdfs:domain music_ontology:Traccia ;
+                             rdfs:range xsd:string ;
+                             rdfs:comment "Titolo di una certa traccia musicale"@it ;
+                             rdfs:label "titolo traccia"@it .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://dbpedia.org/ontology/Album
+<http://dbpedia.org/ontology/Album> rdf:type owl:Class ;
+                                    owl:equivalentClass music_ontology:Album ;
+                                    rdfs:subClassOf <http://www.ontologydesignpatterns.org/cp/owl/list.owl#List> .
+
+
+###  http://dbpedia.org/ontology/MusicGenre
+<http://dbpedia.org/ontology/MusicGenre> rdf:type owl:Class ;
+                                         owl:equivalentClass music_ontology:Genere ;
+                                         rdfs:comment "Categoria che identifica brani musicali"@it ;
+                                         rdfs:label "Genere musicale"@it .
+
+
+###  http://dbpedia.org/ontology/RecordLabel
+<http://dbpedia.org/ontology/RecordLabel> rdf:type owl:Class ;
+                                          owl:equivalentClass music_ontology:CasaDiscografica ;
+                                          rdfs:comment "L’etichetta discografica (o casa discografica) è un marchio commerciale creato dalle compagnie specializzate in produzione, eventualmente distribuzione e promozione, di musica e in taluni casi anche di video (specialmente video musicali), su diversi formati (come il compact disc, il disco in vinile, il DVD, le musicassette, e con l'avvento di Internet soprattutto con la distribuzione digitale)."@it ;
+                                          rdfs:label "Record label"@it .
+
+
+###  http://dbpedia.org/ontology/Song
+<http://dbpedia.org/ontology/Song> rdf:type owl:Class ;
+                                   owl:equivalentClass music_ontology:Canzone ;
+                                   rdfs:subClassOf informationrealization:InformationObject ;
+                                   rdfs:comment "Composizione vocale e scritta"@it ;
+                                   rdfs:label "canzone"@it .
+
+
+###  http://purl.org/dc/terms/Agent
+<http://purl.org/dc/terms/Agent> rdf:type owl:Class .
+
+
+###  http://schema.org/Person
+<http://schema.org/Person> rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Album
+music_ontology:Album rdf:type owl:Class ;
+                     rdfs:subClassOf <http://www.ontologydesignpatterns.org/cp/owl/list.owl#List> ;
+                     rdfs:comment "Un album discografico è un supporto discografico (in vinile o LP, CD, musicassetta, Stereo8, download digitale o altro formato) di lunga durata, contenente una raccolta di brani musicali di uno stesso artista o di più artisti differenti (compilation)."@it ;
+                     rdfs:label "Album"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Artista
+music_ontology:Artista rdf:type owl:Class ;
+                       rdfs:subClassOf foaf:Person ;
+                       owl:disjointWith foaf:Group ;
+                       rdfs:comment "Persona della cui attività si esprime nel campo della musica"@it ;
+                       rdfs:label "Artista"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#CD
+music_ontology:CD rdf:type owl:Class ;
+                  owl:equivalentClass [ rdf:type owl:Restriction ;
+                                        owl:onProperty music_ontology:haSupporto ;
+                                        owl:hasValue "CD"
+                                      ] ;
+                  rdfs:subClassOf music_ontology:Supporto ;
+                  rdfs:comment "Il compact disc è un tipo standardizzato di disco ottico utilizzato in vari ambiti per la memorizzazione di informazioni in formato digitale."@it ;
+                  rdfs:label "CD"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Calma
+music_ontology:Calma rdf:type owl:Class ;
+                     owl:equivalentClass [ rdf:type owl:Restriction ;
+                                           owl:onProperty music_ontology:haBPM ;
+                                           owl:someValuesFrom [ rdf:type rdfs:Datatype ;
+                                                                owl:onDatatype xsd:integer ;
+                                                                owl:withRestrictions ( [ xsd:maxInclusive 80
+                                                                                       ]
+                                                                                     )
+                                                              ]
+                                         ] ;
+                     rdfs:subClassOf music_ontology:Umore ;
+                     owl:disjointWith music_ontology:Energetico ;
+                     rdfs:comment "Stato d'animo calmo"@it ;
+                     rdfs:label "Calma"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Canzone
+music_ontology:Canzone rdf:type owl:Class ;
+                       rdfs:subClassOf informationrealization:InformationObject ;
+                       rdfs:comment "Composizione vocale e scritta"@it ;
+                       rdfs:label "Canzone"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#CasaDiscografica
+music_ontology:CasaDiscografica rdf:type owl:Class ;
+                                rdfs:comment "Azienda specializzata in produzione e distribuzione di musica"@it ;
+                                rdfs:label "Casa discografica"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Classica
+music_ontology:Classica rdf:type owl:Class ;
+                        owl:equivalentClass [ rdf:type owl:Restriction ;
+                                              owl:onProperty music_ontology:haGenere ;
+                                              owl:hasValue "Classica"
+                                            ] ;
+                        rdfs:subClassOf music_ontology:Genere ;
+                        rdfs:comment "Col termine musica classica ci si riferisce alla musica colta, sacra e profana, composta o avente radici nel contesto della cultura occidentale."@it ;
+                        rdfs:label "Classica"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Compositore
+music_ontology:Compositore rdf:type owl:Class ;
+                           owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                 owl:onProperty [ owl:inverseOf music_ontology:compostaDa
+                                                                ] ;
+                                                 owl:someValuesFrom foaf:Person
+                                               ] ;
+                           rdfs:subClassOf foaf:Person ;
+                           rdfs:comment "Coloro che hanno contribuito alla tradizione della musica classica occidentale attraverso la creazione di opere espresse in notazione musicale scritta."@it ;
+                           rdfs:label "Compositore"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Digitale
+music_ontology:Digitale rdf:type owl:Class ;
+                        owl:equivalentClass [ rdf:type owl:Restriction ;
+                                              owl:onProperty music_ontology:haSupporto ;
+                                              owl:hasValue "Digitale"
+                                            ] ;
+                        rdfs:subClassOf music_ontology:Supporto ;
+                        rdfs:comment "Con il termine musica digitale si intende una qualsiasi composizione musicale convertita in segnale digitale."@it ;
+                        rdfs:label "Digitale"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Energetico
+music_ontology:Energetico rdf:type owl:Class ;
+                          owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                owl:onProperty music_ontology:haBPM ;
+                                                owl:someValuesFrom [ rdf:type rdfs:Datatype ;
+                                                                     owl:onDatatype xsd:integer ;
+                                                                     owl:withRestrictions ( [ xsd:minExclusive 80
+                                                                                            ]
+                                                                                          )
+                                                                   ]
+                                              ] ;
+                          rdfs:subClassOf music_ontology:Umore ;
+                          rdfs:comment "Stato d'animo energetico"@it ;
+                          rdfs:label "Energetico"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Felice
+music_ontology:Felice rdf:type owl:Class ;
+                      owl:equivalentClass [ rdf:type owl:Restriction ;
+                                            owl:onProperty music_ontology:haScala ;
+                                            owl:hasValue "Maggiore"
+                                          ] ;
+                      rdfs:subClassOf music_ontology:Umore ;
+                      owl:disjointWith music_ontology:Triste ;
+                      rdfs:comment "Stato d'animo felice"@it ;
+                      rdfs:label "Felice"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Genere
+music_ontology:Genere rdf:type owl:Class ;
+                      rdfs:comment "Categoria che identifica brani musicali"@it ;
+                      rdfs:label "Genere musicale"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Gruppo
+music_ontology:Gruppo rdf:type owl:Class ;
+                      owl:equivalentClass [ rdf:type owl:Restriction ;
+                                            owl:onProperty music_ontology:gruppo_ha_membro ;
+                                            owl:someValuesFrom music_ontology:Artista
+                                          ] ;
+                      rdfs:subClassOf foaf:Group ;
+                      owl:disjointWith music_ontology:Solo ;
+                      rdfs:comment "Sodalizio artistico composto da persone che suonano stabilmente musica insieme"@it ;
+                      rdfs:label "Gruppo"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Indie
+music_ontology:Indie rdf:type owl:Class ;
+                     owl:equivalentClass [ rdf:type owl:Restriction ;
+                                           owl:onProperty music_ontology:haGenere ;
+                                           owl:hasValue "Indie"
+                                         ] ;
+                     rdfs:subClassOf music_ontology:Genere ;
+                     rdfs:comment "L'indie è un genere musicale di alternative rock nato nel Regno Unito e negli Stati Uniti alla fine degli anni ottanta e diffusosi, soprattutto a partire dagli anni 2000"@it ;
+                     rdfs:label "Indie"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Jazz
+music_ontology:Jazz rdf:type owl:Class ;
+                    owl:equivalentClass [ rdf:type owl:Restriction ;
+                                          owl:onProperty music_ontology:haGenere ;
+                                          owl:hasValue "Jazz"
+                                        ] ;
+                    rdfs:subClassOf music_ontology:Genere ;
+                    rdfs:comment "Il jazz è un genere musicale nato agli inizi del XX secolo come evoluzione di forme musicali già utilizzate dagli schiavi afroamericani."@it ;
+                    rdfs:label "Jazz"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Musicista
+music_ontology:Musicista rdf:type owl:Class ;
+                         rdfs:subClassOf music_ontology:Ruolo ;
+                         rdfs:comment "Persona che svolge e ha talento per una determinata attività in musica"@it ;
+                         rdfs:label "Musicista"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Pop
+music_ontology:Pop rdf:type owl:Class ;
+                   owl:equivalentClass [ rdf:type owl:Restriction ;
+                                         owl:onProperty music_ontology:haGenere ;
+                                         owl:hasValue "Pop"
+                                       ] ;
+                   rdfs:subClassOf music_ontology:Genere ;
+                   rdfs:comment "La musica pop, traduzione del termine inglese pop music, è un genere musicale appartenente all'insieme della popular music, che trova origine, nella sua forma moderna, come derivazione del rock and roll."@it ;
+                   rdfs:label "Pop"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Produttore
+music_ontology:Produttore rdf:type owl:Class ;
+                          rdfs:subClassOf foaf:Person ;
+                          rdfs:comment "Persona che si occupa della supervisione delle sessioni in studio di registrazione"@it ;
+                          rdfs:label "Produttore"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Recording
+music_ontology:Recording rdf:type owl:Class ;
+                         rdfs:comment "La registrazione sonora è un processo elettrico, digitale o meccanico che consente di acquisire onde sonore, come ad esempio la voce umana, il canto, la musica strumentale o effetti sonori in genere."@it ;
+                         rdfs:label "Recording"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Release
+music_ontology:Release rdf:type owl:Class ;
+                       rdfs:comment "In informatica, nell'ambito dello sviluppo software, la release (sostantivo mutuato dall'inglese che tradotto letteralmente significa \"emissione\", \"uscita\" o \"distribuzione\", spesso erroneamente tradotto con \"rilascio\") è una specifica versione di un software resa disponibile ai suoi utenti finali"@it ;
+                       rdfs:label "Release"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Rock
+music_ontology:Rock rdf:type owl:Class ;
+                    owl:equivalentClass [ rdf:type owl:Restriction ;
+                                          owl:onProperty music_ontology:haGenere ;
+                                          owl:hasValue "Rock"
+                                        ] ;
+                    rdfs:subClassOf music_ontology:Genere ;
+                    rdfs:comment "Il rock, o musica rock, è un genere della popular music sviluppatosi negli Stati Uniti e nel Regno Unito nel corso degli anni cinquanta e sessanta del Novecento."@it ;
+                    rdfs:label "Rock"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Ruolo
+music_ontology:Ruolo rdf:type owl:Class ;
+                     rdfs:comment "Ruolo ricoperto da un agente"@it ;
+                     rdfs:label "Ruolo"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#RuoloComponenteNelGruppo
+music_ontology:RuoloComponenteNelGruppo rdf:type owl:Class ;
+                                        rdfs:comment "Una situazione che rappresenta il ruolo (o i ruoili) di uno specifico artista parteicpante ad un gruppo musicale"@it ;
+                                        rdfs:label "Ruolo dell'artista nel gruppo"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Scrittore
+music_ontology:Scrittore rdf:type owl:Class ;
+                         owl:equivalentClass [ rdf:type owl:Restriction ;
+                                               owl:onProperty [ owl:inverseOf music_ontology:scrittaDa
+                                                              ] ;
+                                               owl:someValuesFrom foaf:Person
+                                             ] ;
+                         rdfs:subClassOf foaf:Person ;
+                         rdfs:comment "Figura incaricata della produzione del testo musicale di una canzone."@it ;
+                         rdfs:label "Scrittore"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#SolistaItaliano
+music_ontology:SolistaItaliano rdf:type owl:Class ;
+                               owl:equivalentClass [ owl:intersectionOf ( music_ontology:Solo
+                                                                          [ rdf:type owl:Restriction ;
+                                                                            owl:onProperty music_ontology:nazione ;
+                                                                            owl:hasValue "Italiana"
+                                                                          ]
+                                                                        ) ;
+                                                     rdf:type owl:Class
+                                                   ] ;
+                               rdfs:subClassOf music_ontology:Solo ;
+                               rdfs:comment "Persona di origini italiane che suona da solo in una composizione musicale"@it ;
+                               rdfs:label "Solista Italiano"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Solo
+music_ontology:Solo rdf:type owl:Class ;
+                    rdfs:subClassOf music_ontology:Artista ;
+                    rdfs:comment "Persona che suona da solo in una composizione musicale"@it ;
+                    rdfs:label "Solo"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Strumentale
+music_ontology:Strumentale rdf:type owl:Class ;
+                           owl:equivalentClass [ rdf:type owl:Class ;
+                                                 owl:oneOf ( music_ontology:Requiem
+                                                           )
+                                               ] ;
+                           rdfs:subClassOf music_ontology:Canzone ;
+                           rdfs:comment "La musica strumentale è la musica che viene eseguita esclusivamente mediante l'impiego di strumenti musicali, senza l'utilizzo della parte vocale. I brani in cui è assente la musica strumentale, eseguiti con il solo utilizzo del canto individuale o corale, vengono detti 'a cappella'."@it ;
+                           rdfs:label "Strumentale"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Supporto
+music_ontology:Supporto rdf:type owl:Class ;
+                        rdfs:comment "Dispositivo di memorizzazione per tracce"@it ;
+                        rdfs:label "Supporto"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Traccia
+music_ontology:Traccia rdf:type owl:Class ;
+                       rdfs:subClassOf informationrealization:InformationRealization ,
+                                       <http://www.ontologydesignpatterns.org/cp/owl/list.owl#ListItem> ;
+                       rdfs:comment "Brano musicale"@it ;
+                       rdfs:label "Traccia musicale"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Triste
+music_ontology:Triste rdf:type owl:Class ;
+                      owl:equivalentClass [ rdf:type owl:Restriction ;
+                                            owl:onProperty music_ontology:haScala ;
+                                            owl:hasValue "Minore"
+                                          ] ;
+                      rdfs:subClassOf music_ontology:Umore ;
+                      rdfs:comment "Stato d'animo triste"@it ;
+                      rdfs:label "Triste"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Umore
+music_ontology:Umore rdf:type owl:Class ;
+                     rdfs:comment "Stato d'animo generato dalla traccia"@it ;
+                     rdfs:label "Umore"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Vinile
+music_ontology:Vinile rdf:type owl:Class ;
+                      owl:equivalentClass [ rdf:type owl:Restriction ;
+                                            owl:onProperty music_ontology:haSupporto ;
+                                            owl:hasValue "Vinile"
+                                          ] ;
+                      rdfs:subClassOf music_ontology:Supporto ;
+                      rdfs:comment "Il disco in vinile (noto anche come microsolco), è un supporto per la memorizzazione analogica di segnali sonori. È stato ufficialmente introdotto nel 1948 dalla Columbia records negli Stati Uniti d'America come evoluzione del precedente disco a 78 giri, dalle simili caratteristiche, realizzato in gommalacca."@it ;
+                      rdfs:label "Vinile"@it .
+
+
+###  http://www.w3.org/2000/10/swap/pim/contact#Person
+<http://www.w3.org/2000/10/swap/pim/contact#Person> rdf:type owl:Class .
+
+
+###  http://xmlns.com/foaf/0.1/Group
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Alice_McVeigh
+music_ontology:Alice_McVeigh rdf:type owl:NamedIndividual ,
+                                      music_ontology:Artista ;
+                             music_ontology:nazione "Inglese"^^xsd:string ;
+                             music_ontology:nome "Alice McVeigh"^^xsd:string ;
+                             foaf:name "Alice McVeigh"^^xsd:string ;
+                             rdfs:comment "Musicista dell'orchestra \"Hanover Band\""@it ;
+                             rdfs:label "Alice McVeigh"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#All_Around_The_World
+music_ontology:All_Around_The_World rdf:type owl:NamedIndividual ;
+                                    music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#All_Around_The_World_(Traccia)> ;
+                                    music_ontology:compostaDa music_ontology:Justin_Bieber ;
+                                    music_ontology:scrittaDa music_ontology:Justin_Bieber ;
+                                    music_ontology:titoloCanzone "All Around The World" ;
+                                    rdfs:comment "Canzone di Justin Bieber"@it ;
+                                    rdfs:label "All Around The World"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Ancora_una_notte_insieme
+music_ontology:Ancora_una_notte_insieme rdf:type owl:NamedIndividual ;
+                                        owl:sameAs <http://www.wikidata.org/entity/Q3615262> ;
+                                        music_ontology:album_ha_traccia <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Anni_senza_fiato_(Traccia)> ,
+                                                                        <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Brava_la_vita_(Traccia)> ,
+                                                                        <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Donne_Italiane_(Traccia)> ,
+                                                                        <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#La_mia_donna_(Traccia)> ;
+                                        music_ontology:pubblicato_in <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Ancora_una_notte_insieme_(Release)> ;
+                                        bag:size 4 ;
+                                        music_ontology:haTitolo "Ancora una notte insieme" ;
+                                        music_ontology:numeroTracce 4 ;
+                                        rdfs:comment "Ancora una notte insieme è un'antologia del gruppo musicale italiano Pooh. Si tratta dell'ultimo lavoro proposto dal complesso nella formazione più famosa (Roby, Dodi, Stefano e Red). L'album è uscito l'8 maggio 2009 ed è stato preceduto dalla programmazione radiofonica dell'unico inedito dal titolo omonimo. L'antologia rimane in testa alle classifiche per 10 settimane consecutive."@it ;
+                                        rdfs:label "Ancora una notte insieme"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Andrew_Byrt
+music_ontology:Andrew_Byrt rdf:type owl:NamedIndividual ;
+                           music_ontology:nazione "Inglese"^^xsd:string ;
+                           music_ontology:nome "Andrew Byrt"^^xsd:string ;
+                           foaf:name "Andrew Byrt"^^xsd:string ;
+                           rdfs:comment "Musicista dell'orchestra \"Hanover Band\""@it ;
+                           rdfs:label "Andrew Byrt"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Anni_Senza_Fiato
+music_ontology:Anni_Senza_Fiato rdf:type owl:NamedIndividual ;
+                                music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Anni_senza_fiato_(Traccia)> ;
+                                music_ontology:compostaDa music_ontology:Pooh ;
+                                music_ontology:scrittaDa music_ontology:Pooh ;
+                                music_ontology:titoloCanzone "Anni senza fiato" ;
+                                rdfs:comment "Canzone dei Pooh"@it ;
+                                rdfs:label "Anni senza fiato"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Asylum_Records
+music_ontology:Asylum_Records rdf:type owl:NamedIndividual ;
+                              owl:sameAs <http://www.wikidata.org/entity/Q1998195> ;
+                              music_ontology:ha_contrattato music_ontology:Ed_Sheeran ;
+                              music_ontology:pubblica <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#÷_(Release)> ;
+                              music_ontology:nome_casaDiscografica "Asylum Records" ;
+                              rdfs:comment "Asylum Records è un'etichetta discografica statunitense fondata nel 1971 da David Geffen, insieme al socio Elliot Roberts, che in precedenza aveva lavorato come agente per la William Morris Agency."@it ;
+                              rdfs:label "Asylum Records"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Atlanta_Records
+music_ontology:Atlanta_Records rdf:type owl:NamedIndividual ;
+                               owl:sameAs <http://www.wikidata.org/entity/Q4816207> ;
+                               music_ontology:ha_contrattato music_ontology:Pooh ;
+                               music_ontology:pubblica <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Ancora_una_notte_insieme_(Release)> ;
+                               music_ontology:nome_casaDiscografica "Atlanta Records" ;
+                               rdfs:comment "La Atlantic Records (o Atlantic Recording Corporation) è un'etichetta discografica fondata nel 1947 da Ahmet Ertegün e Herb Abramson."@it ;
+                               rdfs:label "Atlanta Records"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Bassista
+music_ontology:Bassista rdf:type owl:NamedIndividual ;
+                        rdfs:comment "Il bassista è il musicista che suona il basso elettrico o acustico."@it ;
+                        rdfs:label "Bassista"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Batterista
+music_ontology:Batterista rdf:type owl:NamedIndividual ;
+                          rdfs:comment "Batterista è colui che suona un insieme di singoli strumenti a percussione, quali piatti, rullante, grancassa, campanacci, tom, ecc. (vedi batteria) disposti a determinate distanze tra loro in maniera di poter essere suonati da un unico musicista e talvolta in posizioni diverse da quelle considerate ideali."@it ;
+                          rdfs:label "Batterista"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Be_Alright
+music_ontology:Be_Alright rdf:type owl:NamedIndividual ;
+                          music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Be_Alright_(Traccia)> ;
+                          music_ontology:compostaDa music_ontology:Justin_Bieber ;
+                          music_ontology:scrittaDa music_ontology:Justin_Bieber ;
+                          music_ontology:titoloCanzone "Be Alright" ;
+                          rdfs:comment "Canzone di Ed Sheeran"@it ;
+                          rdfs:label "Be Alright"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Beautiful_People
+music_ontology:Beautiful_People rdf:type owl:NamedIndividual ;
+                                music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Beautiful_People_(Traccia)> ;
+                                music_ontology:scrittaDa music_ontology:Ed_Sheeran ;
+                                music_ontology:titoloCanzone "Beautiful People" ;
+                                rdfs:comment "Canzone di Ed Sheeran"@it ;
+                                rdfs:label "Beautiful People"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Believe
+music_ontology:Believe rdf:type owl:NamedIndividual ;
+                       owl:sameAs <http://www.wikidata.org/entity/Q815612> ;
+                       music_ontology:album_di music_ontology:Justin_Bieber ;
+                       music_ontology:album_ha_traccia <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#All_Around_The_World_(Traccia)> ,
+                                                       <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Be_Alright_(Traccia)> ;
+                       music_ontology:pubblicato_in <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Believe_(Release)> ;
+                       bag:size 2 ;
+                       music_ontology:haTitolo "Believe" ;
+                       music_ontology:numeroTracce 2 ;
+                       rdfs:comment "Believe è il sesto album (terzo in studio) di Justin Bieber pubblicato il 19 giugno 2012, nei formati standard e deluxe. Nella versione normale sono presenti 13 tracce, mentre in quella deluxe vi sono 17 tracce (13+4 bonus tracks)."@it ;
+                       rdfs:label "Believe"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Best_Part_Of_Me
+music_ontology:Best_Part_Of_Me rdf:type owl:NamedIndividual ;
+                               music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Best_Part_Of_Me_(Traccia)> ;
+                               music_ontology:compostaDa music_ontology:Ed_Sheeran ;
+                               music_ontology:scrittaDa music_ontology:Ed_Sheeran ;
+                               music_ontology:titoloCanzone "Best Part Of Me" ;
+                               rdfs:comment "Canzone di Ed Sheeran"@it ;
+                               rdfs:label "Best Part Of Me"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Brava_la_vita
+music_ontology:Brava_la_vita rdf:type owl:NamedIndividual ;
+                             music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Brava_la_vita_(Traccia)> ;
+                             music_ontology:compostaDa music_ontology:Pooh ;
+                             music_ontology:scrittaDa music_ontology:Pooh ;
+                             music_ontology:titoloCanzone "Brava la vita" ;
+                             rdfs:comment "Brano dei Pooh"@it ;
+                             rdfs:label "Brava la vita"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Brian_May
+music_ontology:Brian_May rdf:type owl:NamedIndividual ,
+                                  music_ontology:Artista ;
+                         owl:sameAs <http://www.wikidata.org/entity/Q15873> ;
+                         music_ontology:nazione "Inglese" ;
+                         music_ontology:nome "Brian May" ;
+                         foaf:name "Brian May" ;
+                         rdfs:comment "Brian Harold May (Twickenham, 19 luglio 1947) è un chitarrista, cantautore e compositore britannico, famoso per essere membro dei Queen, band da lui fondata insieme a Roger Taylor e Freddie Mercury."@it ;
+                         rdfs:label "Brian May"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#CBS
+music_ontology:CBS rdf:type owl:NamedIndividual ,
+                            music_ontology:CasaDiscografica ;
+                   owl:sameAs <http://www.wikidata.org/entity/Q49462460> ;
+                   music_ontology:ha_contrattato music_ontology:Justin_Bieber ;
+                   music_ontology:pubblica music_ontology:Believe ;
+                   music_ontology:nome_casaDiscografica "CBS" ;
+                   rdfs:comment "La CBS è un'etichetta discografica statunitense fondata nel 1961 e attiva in Italia dal 1962 al 1989."@it ;
+                   rdfs:label "CBS"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Cantante
+music_ontology:Cantante rdf:type owl:NamedIndividual ,
+                                 music_ontology:Musicista ;
+                        rdfs:comment "Artista che effettua una perfomance vocale."@it ;
+                        rdfs:label "Cantante"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Castle_On_The_Hill
+music_ontology:Castle_On_The_Hill rdf:type owl:NamedIndividual ,
+                                           music_ontology:Canzone ;
+                                  music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Castle_on_the_hill_(Traccia)> ;
+                                  music_ontology:compostaDa music_ontology:Ed_Sheeran ;
+                                  music_ontology:scrittaDa music_ontology:Ed_Sheeran ;
+                                  music_ontology:titoloCanzone "Castle on the hill" ;
+                                  rdfs:comment "Canzone di Ed Sheeran"@it ;
+                                  rdfs:label "Castle On The Hill"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Chitarrista
+music_ontology:Chitarrista rdf:type owl:NamedIndividual ,
+                                    music_ontology:Musicista ;
+                           rdfs:comment "Il chitarrista è un musicista suonatore di chitarra. Un chitarrista può essere esperto in uno o più tipi di chitarra: elettrica, folk, chitarra acustica o classica."@it ;
+                           rdfs:label "Chitarrista"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Dive
+music_ontology:Dive rdf:type owl:NamedIndividual ,
+                             music_ontology:Canzone ;
+                    music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Dive_(Traccia)> ;
+                    music_ontology:compostaDa music_ontology:Ed_Sheeran ;
+                    music_ontology:scrittaDa music_ontology:Ed_Sheeran ;
+                    music_ontology:titoloCanzone "Dive" ;
+                    rdfs:comment "Canzone di Ed Sheeran"@it ;
+                    rdfs:label "Dive"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Dodi_Battaglia
+music_ontology:Dodi_Battaglia rdf:type owl:NamedIndividual ,
+                                       music_ontology:Artista ;
+                              owl:sameAs <http://www.wikidata.org/entity/Q3712505> ;
+                              music_ontology:nazione "Italiana" ;
+                              music_ontology:nome "Dodi Battaglia" ;
+                              foaf:name "Dodi Battaglia" ;
+                              rdfs:comment "Dodi Battaglia, all'anagrafe Donato Battaglia (Bologna, 1º giugno 1951), è un chitarrista, cantautore e compositore italiano. Chitarrista e cantante dei Pooh dal 1968, è autore di oltre 140 brani pubblicati, dei quali più di 70 sono stati composti per il gruppo e vanta numerosi e prestigiosi riconoscimenti, tra cui il titolo di \"miglior chitarrista europeo\" conferitogli nei primi anni ottanta dalla rivista tedesca Stern."@it ;
+                              rdfs:label "Dodi Battaglia"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Donne_Italiane
+music_ontology:Donne_Italiane rdf:type owl:NamedIndividual ,
+                                       music_ontology:Canzone ;
+                              music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Donne_Italiane_(Traccia)> ;
+                              music_ontology:compostaDa music_ontology:Pooh ;
+                              music_ontology:scrittaDa music_ontology:Pooh ;
+                              music_ontology:titoloCanzone "Donne Italiane" ;
+                              rdfs:comment "Canzone dei Pooh"@it ;
+                              rdfs:label "Donne Italiane"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Ed_Sheeran
+music_ontology:Ed_Sheeran rdf:type owl:NamedIndividual ,
+                                   music_ontology:Solo ;
+                          owl:sameAs <http://www.wikidata.org/entity/Q47447> ;
+                          music_ontology:ha_album music_ontology:No._6_Collaborations_Project ,
+                                                  <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#÷> ;
+                          music_ontology:ha_etichetta music_ontology:Asylum_Records ,
+                                                      music_ontology:Island_Records ;
+                          music_ontology:nazione "Inglese" ;
+                          music_ontology:nome "Ed Sheeran" ;
+                          foaf:name "Ed Sheeran" ;
+                          rdfs:comment "Edward Christopher Sheeran (Halifax, 17 febbraio 1991) è un cantautore e polistrumentista britannico."@it ;
+                          rdfs:label "Ed Sheeran"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Electric_and_Musical_Industries
+music_ontology:Electric_and_Musical_Industries rdf:type owl:NamedIndividual ,
+                                                        music_ontology:CasaDiscografica ;
+                                               owl:sameAs <http://www.wikidata.org/entity/Q183412> ;
+                                               music_ontology:ha_contrattato music_ontology:Queen ;
+                                               music_ontology:pubblica <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#The_Works_(Release)> ;
+                                               music_ontology:nome_casaDiscografica "Electric and Musical Industries" ;
+                                               rdfs:comment "La Electric and Musical Industries, abbreviata in EMI, fu un'etichetta discografica britannica."@it ;
+                                               rdfs:label "Electric and Musical Industries"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Eraser
+music_ontology:Eraser rdf:type owl:NamedIndividual ,
+                               music_ontology:Canzone ;
+                      music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Eraser_(Traccia)> ;
+                      music_ontology:compostaDa music_ontology:Ed_Sheeran ;
+                      music_ontology:scrittaDa music_ontology:Ed_Sheeran ;
+                      music_ontology:titoloCanzone "Eraser" ;
+                      rdfs:comment "Canzone di Ed Sheeran"@it ;
+                      rdfs:label "Eraser"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Freddie_Mercury
+music_ontology:Freddie_Mercury rdf:type owl:NamedIndividual ,
+                                        music_ontology:Artista ;
+                               owl:sameAs <http://www.wikidata.org/entity/Q15869> ;
+                               music_ontology:nazione "Inglese" ;
+                               music_ontology:nome "Freddie Mercury" ;
+                               foaf:name "Freddie Mercury" ;
+                               rdfs:comment "Freddie Mercury, pseudonimo di Farrokh Bulsara (Zanzibar, 5 settembre 1946 – Londra, 24 novembre 1991), è stato un cantautore, compositore e musicista britannico di origini parsi."@it ;
+                               rdfs:label "Freddie Mercury"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#George_Martin
+music_ontology:George_Martin rdf:type owl:NamedIndividual ,
+                                      foaf:Person ;
+                             music_ontology:ha_produttore <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#The_Works_(Release)> ;
+                             music_ontology:nazione "Inglese"^^xsd:string ;
+                             music_ontology:nome "George Martin"^^xsd:string ;
+                             foaf:name "George Martin"^^xsd:string ;
+                             rdfs:comment "Sir George Henry Martin è stato un produttore discografico, compositore e arrangiatore britannico."@it ;
+                             rdfs:label "George Martin"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Hanover_Band
+music_ontology:Hanover_Band rdf:type owl:NamedIndividual ,
+                                     music_ontology:Gruppo ;
+                            music_ontology:performa <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Requiem_(Traccia)> ;
+                            music_ontology:nazione "Inglese"^^xsd:string ;
+                            music_ontology:nome "Hanover Band"^^xsd:string ;
+                            foaf:name "Hanover Band"^^xsd:string ;
+                            rdfs:comment "Orchestra situata a Brighton."@it ;
+                            rdfs:label "Hanover Band"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Il_segreto_del_tempo
+music_ontology:Il_segreto_del_tempo rdf:type owl:NamedIndividual ,
+                                             music_ontology:Canzone ;
+                                    music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Il_segreto_del_tempo_(Traccia)> ;
+                                    music_ontology:compostaDa music_ontology:Roby_Facchinetti ;
+                                    music_ontology:scrittaDa music_ontology:Roby_Facchinetti ;
+                                    music_ontology:titoloCanzone "Il segreto del tempo" ;
+                                    rdfs:comment "Canzone di Roby Facchinetti"@it ;
+                                    rdfs:label "Il segreto del tempo"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Island_Records
+music_ontology:Island_Records rdf:type owl:NamedIndividual ,
+                                       <http://dbpedia.org/ontology/RecordLabel> ,
+                                       music_ontology:CasaDiscografica ;
+                              owl:sameAs <http://www.wikidata.org/entity/Q190585> ;
+                              music_ontology:ha_contrattato music_ontology:Ed_Sheeran ,
+                                                            music_ontology:Justin_Bieber ;
+                              music_ontology:pubblica <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#No._6_Collaborations_Project_(Release)> ;
+                              music_ontology:nome_casaDiscografica "Island Records" ;
+                              rdfs:comment "La Island Records è un'etichetta discografica fondata nel 1959 da Chris Blackwell in Giamaica."@it ;
+                              rdfs:label "Island Records"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#John_Deacon
+music_ontology:John_Deacon rdf:type owl:NamedIndividual ,
+                                    music_ontology:Artista ;
+                           owl:sameAs <http://www.wikidata.org/entity/Q192103> ;
+                           music_ontology:nazione "Inglese" ;
+                           music_ontology:nome "John Deacon" ;
+                           foaf:name "John Deacon" ;
+                           rdfs:comment "John Richard Deacon (Oadby, 19 agosto 1951) è un bassista, polistrumentista e compositore britannico. Dal 1971 al 1997 (anno in cui si ritirò dal mondo della musica) è stato il bassista dei Queen."@it ;
+                           rdfs:label "John Deacon"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Justin_Bieber
+music_ontology:Justin_Bieber rdf:type owl:NamedIndividual ,
+                                      music_ontology:Solo ;
+                             owl:sameAs <http://www.wikidata.org/entity/Q34086> ;
+                             music_ontology:featured <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Beautiful_People_(Traccia)> ;
+                             music_ontology:ha_album music_ontology:Believe ;
+                             music_ontology:ha_etichetta music_ontology:CBS ,
+                                                         music_ontology:Island_Records ;
+                             music_ontology:nazione "Americana" ;
+                             music_ontology:nome "Justin Bieber" ;
+                             foaf:name "Justin Bieber" ;
+                             rdfs:comment "Justin Drew Bieber (London, 1º marzo 1994) è un cantautore, musicista e attore canadese."@it ;
+                             rdfs:label "Justin Bieber"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Keep_passing_the_open_windows
+music_ontology:Keep_passing_the_open_windows rdf:type owl:NamedIndividual ,
+                                                      music_ontology:Canzone ;
+                                             music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Keep_Passing_the_Open_Windows_(Traccia)> ;
+                                             music_ontology:compostaDa music_ontology:Queen ;
+                                             music_ontology:scrittaDa music_ontology:Queen ;
+                                             music_ontology:titoloCanzone "Keep Passing the Open Windows" ;
+                                             rdfs:comment "Canzone dei Queen"@it ;
+                                             rdfs:label "Keep passing the open windows"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#La_mia_donna
+music_ontology:La_mia_donna rdf:type owl:NamedIndividual ,
+                                     music_ontology:Canzone ;
+                            music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#La_mia_donna_(Traccia)> ;
+                            music_ontology:compostaDa music_ontology:Pooh ;
+                            music_ontology:scrittaDa music_ontology:Pooh ;
+                            music_ontology:titoloCanzone "La mia donna" ;
+                            rdfs:comment "Canzone dei Pooh"@it ;
+                            rdfs:label "La mia donna"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Man_on_the_prowl
+music_ontology:Man_on_the_prowl rdf:type owl:NamedIndividual ,
+                                         music_ontology:Canzone ;
+                                music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Man_on_the_Prowl_(Traccia)> ;
+                                music_ontology:compostaDa music_ontology:Queen ;
+                                music_ontology:scrittaDa music_ontology:Queen ;
+                                music_ontology:titoloCanzone "Man on the Prowl" ;
+                                rdfs:comment "Canzone dei Queen"@it ;
+                                rdfs:label "Man on the prowl"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#MembroGruppo1
+music_ontology:MembroGruppo1 rdf:type owl:NamedIndividual ,
+                                      music_ontology:RuoloComponenteNelGruppo ;
+                             music_ontology:artistaPartecipanteGruppo music_ontology:Freddie_Mercury ;
+                             music_ontology:gruppoPartecipante music_ontology:Queen ;
+                             music_ontology:ruoloArtistaPartecipanteGruppo music_ontology:Cantante ,
+                                                                           music_ontology:Tastierista ;
+                             rdfs:comment "Ruolo di Freddie Mercury nei Queen"@it ;
+                             rdfs:label "Ruolo di Freddie Mercury nei Queen"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#MembroGruppo10
+music_ontology:MembroGruppo10 rdf:type owl:NamedIndividual ,
+                                       music_ontology:RuoloComponenteNelGruppo ;
+                              music_ontology:artistaPartecipanteGruppo music_ontology:Andrew_Byrt ;
+                              music_ontology:gruppoPartecipante music_ontology:Hanover_Band ;
+                              music_ontology:ruoloArtistaPartecipanteGruppo music_ontology:Chitarrista ;
+                              rdfs:comment "Ruolo svolto da Andrew Byrt nel Hanover Band"@it ;
+                              rdfs:label "Ruolo di Andrew Byrt nel Hanover Band"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#MembroGruppo11
+music_ontology:MembroGruppo11 rdf:type owl:NamedIndividual ,
+                                       music_ontology:RuoloComponenteNelGruppo ;
+                              music_ontology:artistaPartecipanteGruppo music_ontology:Alice_McVeigh ;
+                              music_ontology:gruppoPartecipante music_ontology:Hanover_Band ;
+                              music_ontology:ruoloArtistaPartecipanteGruppo music_ontology:Bassista ;
+                              rdfs:comment "Ruolo svolto da Alice McVeigh nell'Hanover Band"@it ;
+                              rdfs:label "Ruolo di Alice McVeigh nel Hanover Band"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#MembroGruppo2
+music_ontology:MembroGruppo2 rdf:type owl:NamedIndividual ,
+                                      music_ontology:RuoloComponenteNelGruppo ;
+                             music_ontology:artistaPartecipanteGruppo music_ontology:Brian_May ;
+                             music_ontology:gruppoPartecipante music_ontology:Queen ;
+                             music_ontology:ruoloArtistaPartecipanteGruppo music_ontology:Chitarrista ;
+                             rdfs:comment "Ruolo di Brian May nei Queen"@it ;
+                             rdfs:label "Ruolo di Brian May nei Queen"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#MembroGruppo3
+music_ontology:MembroGruppo3 rdf:type owl:NamedIndividual ,
+                                      music_ontology:RuoloComponenteNelGruppo ;
+                             music_ontology:artistaPartecipanteGruppo music_ontology:Roger_Taylor ;
+                             music_ontology:gruppoPartecipante music_ontology:Queen ;
+                             music_ontology:ruoloArtistaPartecipanteGruppo music_ontology:Bassista ;
+                             rdfs:comment "Ruolo di Roger Taylor nei Queen"@it ;
+                             rdfs:label "Ruolo di Roger Taylor nei Queen"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#MembroGruppo4
+music_ontology:MembroGruppo4 rdf:type owl:NamedIndividual ,
+                                      music_ontology:RuoloComponenteNelGruppo ;
+                             music_ontology:artistaPartecipanteGruppo music_ontology:John_Deacon ;
+                             music_ontology:gruppoPartecipante music_ontology:Queen ;
+                             music_ontology:ruoloArtistaPartecipanteGruppo music_ontology:Tastierista ;
+                             rdfs:comment "Ruolo di John Deacon nei Queen"@it ;
+                             rdfs:label "Ruolo di John Deacon nei Queen"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#MembroGruppo5
+music_ontology:MembroGruppo5 rdf:type owl:NamedIndividual ,
+                                      music_ontology:RuoloComponenteNelGruppo ;
+                             music_ontology:artistaPartecipanteGruppo music_ontology:Dodi_Battaglia ;
+                             music_ontology:gruppoPartecipante music_ontology:Pooh ;
+                             music_ontology:ruoloArtistaPartecipanteGruppo music_ontology:Cantante ;
+                             rdfs:comment "Ruolo di Dodi Battaglia nei Pooh"@it ;
+                             rdfs:label "Ruolo di Dodi Battaglia nei Pooh"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#MembroGruppo6
+music_ontology:MembroGruppo6 rdf:type owl:NamedIndividual ,
+                                      music_ontology:RuoloComponenteNelGruppo ;
+                             music_ontology:artistaPartecipanteGruppo music_ontology:Roby_Facchinetti ;
+                             music_ontology:gruppoPartecipante music_ontology:Pooh ;
+                             music_ontology:ruoloArtistaPartecipanteGruppo music_ontology:Batterista ;
+                             rdfs:comment "Ruolo di Roby Facchinetti nei Pooh"@it ;
+                             rdfs:label "Ruolo di Roby Facchinetti nei Pooh"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#MembroGruppo7
+music_ontology:MembroGruppo7 rdf:type owl:NamedIndividual ,
+                                      music_ontology:RuoloComponenteNelGruppo ;
+                             music_ontology:artistaPartecipanteGruppo music_ontology:Riccardo_Fogli ;
+                             music_ontology:gruppoPartecipante music_ontology:Pooh ;
+                             music_ontology:ruoloArtistaPartecipanteGruppo music_ontology:Bassista ;
+                             rdfs:comment "Ruolo di Riccardo Fogli nei Pooh"@it ;
+                             rdfs:label "Ruolo di Riccardo Fogli nei Pooh"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#MembroGruppo8
+music_ontology:MembroGruppo8 rdf:type owl:NamedIndividual ,
+                                      music_ontology:RuoloComponenteNelGruppo ;
+                             music_ontology:artistaPartecipanteGruppo music_ontology:Red_Canzian ;
+                             music_ontology:gruppoPartecipante music_ontology:Pooh ;
+                             music_ontology:ruoloArtistaPartecipanteGruppo music_ontology:Cantante ;
+                             rdfs:comment "Ruolo di Red Canzian nei Pooh"@it ;
+                             rdfs:label "Ruolo di Red Canzian nei Pooh"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#MembroGruppo9
+music_ontology:MembroGruppo9 rdf:type owl:NamedIndividual ,
+                                      music_ontology:RuoloComponenteNelGruppo ;
+                             music_ontology:artistaPartecipanteGruppo <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Stefano_D'Orazio> ;
+                             music_ontology:gruppoPartecipante music_ontology:Pooh ;
+                             music_ontology:ruoloArtistaPartecipanteGruppo music_ontology:Bassista ;
+                             rdfs:comment "Ruolo di Stefano D'Orazio nei Pooh"@it ;
+                             rdfs:label "Ruolo di Stefano D'Orazio nei Pooh"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#My_Baby_does_me
+music_ontology:My_Baby_does_me rdf:type owl:NamedIndividual ,
+                                        music_ontology:Canzone ;
+                               music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#My_Baby_does_me_(Traccia)> ;
+                               music_ontology:compostaDa music_ontology:Queen ;
+                               music_ontology:scrittaDa music_ontology:Queen ;
+                               music_ontology:titoloCanzone "My Baby does me" ;
+                               rdfs:comment "Canzone dei Queen"@it ;
+                               rdfs:label "My Baby does me"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#No._6_Collaborations_Project
+music_ontology:No._6_Collaborations_Project rdf:type owl:NamedIndividual ,
+                                                     music_ontology:Album ;
+                                            owl:sameAs <http://www.wikidata.org/entity/Q64000750> ;
+                                            music_ontology:album_ha_traccia <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Beautiful_People_(Traccia)> ,
+                                                                            <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Best_Part_Of_Me_(Traccia)> ;
+                                            music_ontology:pubblicato_in <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#No._6_Collaborations_Project_(Release)> ;
+                                            bag:size 2 ;
+                                            music_ontology:haTitolo "No. 6 Collaborations Project" ;
+                                            music_ontology:numeroTracce 2 ;
+                                            rdfs:comment "Ha debuttato su Spotify con 10.977 milioni di stream globali giornalieri, superando il record di streaming in un'unica giornata della piattaforma precedentemente detenuto da All I Want for Christmas Is You di Mariah Carey."@it ;
+                                            rdfs:label "No. 6 Collaborations Project"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Oak_Felder
+music_ontology:Oak_Felder rdf:type owl:NamedIndividual ,
+                                   foaf:Person ;
+                          music_ontology:ha_produttore <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Believe_(Release)> ;
+                          music_ontology:nazione "Americana"^^xsd:string ;
+                          music_ontology:nome "Oak Felder"^^xsd:string ;
+                          foaf:name "Oak Felder"^^xsd:string ;
+                          rdfs:comment "Felder è un cantautore turco-americano e produttore discografico con sede ad Atlanta e Los Angeles."@it ;
+                          rdfs:label "Oak Felder"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Parlophone
+music_ontology:Parlophone rdf:type owl:NamedIndividual ,
+                                   music_ontology:CasaDiscografica ;
+                          owl:sameAs <http://www.wikidata.org/entity/Q208909> ;
+                          music_ontology:ha_contrattato music_ontology:Queen ;
+                          music_ontology:pubblica <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#The_Miracle_(Release)> ;
+                          music_ontology:nome_casaDiscografica "Parlophone" ;
+                          rdfs:comment "Parlophone è una etichetta discografica fondata in Germania nel 1896 da Carl Lindstrom."@it ;
+                          rdfs:label "Parlophone"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Party
+music_ontology:Party rdf:type owl:NamedIndividual ,
+                              music_ontology:Canzone ;
+                     music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Party_(Traccia)> ;
+                     music_ontology:compostaDa music_ontology:Queen ;
+                     music_ontology:scrittaDa music_ontology:Queen ;
+                     music_ontology:titoloCanzone "Party" ;
+                     rdfs:comment "Canzone dei Queen"@it ;
+                     rdfs:label "Party"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Perfect
+music_ontology:Perfect rdf:type owl:NamedIndividual ,
+                                music_ontology:Canzone ;
+                       music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Perfect_(Traccia)> ;
+                       music_ontology:compostaDa music_ontology:Ed_Sheeran ;
+                       music_ontology:scrittaDa music_ontology:Ed_Sheeran ;
+                       music_ontology:titoloCanzone "Perfect" ;
+                       rdfs:comment "Canzone di Ed Sheeran"@it ;
+                       rdfs:label "Perfect"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Phil_Spector
+music_ontology:Phil_Spector rdf:type owl:NamedIndividual ;
+                            music_ontology:ha_produttore <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#No._6_Collaborations_Project_(Release)> ,
+                                                         <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#÷_(Release)> ;
+                            music_ontology:nazione "Inglese"^^xsd:string ;
+                            music_ontology:nome "Phil Spector"^^xsd:string ;
+                            foaf:name "Phil Spector"^^xsd:string ;
+                            rdfs:comment "Harvey Philip \"Phil\" Spector è un produttore discografico, compositore e musicista statunitense, tra i più influenti e rivoluzionari della storia della musica contemporanea."@it ;
+                            rdfs:label "Phil Spector"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Pooh
+music_ontology:Pooh rdf:type owl:NamedIndividual ,
+                             music_ontology:Gruppo ;
+                    owl:sameAs <http://www.wikidata.org/entity/Q1242174> ;
+                    music_ontology:ha_album music_ontology:Ancora_una_notte_insieme ;
+                    music_ontology:ha_etichetta music_ontology:Atlanta_Records ;
+                    music_ontology:nazione "Italiana" ;
+                    music_ontology:nome "Pooh" ;
+                    foaf:name "Pooh" ;
+                    rdfs:comment "I Pooh sono stati un gruppo musicale italiano formatosi nel 1966 a Bologna e scioltosi ufficialmente dopo l'ultimo concerto nella stessa città il 30 dicembre 2016."@it ;
+                    rdfs:label "Pooh"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Queen
+music_ontology:Queen rdf:type owl:NamedIndividual ,
+                              music_ontology:Gruppo ;
+                     owl:sameAs <http://www.wikidata.org/entity/Q15862> ;
+                     music_ontology:ha_album music_ontology:The_Miracle ,
+                                             music_ontology:The_Works ;
+                     music_ontology:ha_etichetta music_ontology:Electric_and_Musical_Industries ,
+                                                 music_ontology:Parlophone ;
+                     music_ontology:nazione "Inglese" ;
+                     music_ontology:nome "Queen" ;
+                     foaf:name "Queen" ;
+                     rdfs:comment "I Queen sono un gruppo musicale rock britannico, formatosi a Londra nel 1970 dall'incontro del cantante e pianista Freddie Mercury con il chitarrista Brian May e con il batterista Roger Taylor; la formazione storica si è poi completata nel 1971 con l'ingresso del bassista John Deacon."@it ;
+                     rdfs:label "Queen"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Rain_Must_Fall
+music_ontology:Rain_Must_Fall rdf:type owl:NamedIndividual ,
+                                       music_ontology:Canzone ;
+                              music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Rain_Must_Fall_(Traccia)> ;
+                              music_ontology:compostaDa music_ontology:Queen ;
+                              music_ontology:scrittaDa music_ontology:Queen ;
+                              music_ontology:titoloCanzone "Rain Must Fall" ;
+                              rdfs:comment "Canzone dei Queen"@it ;
+                              rdfs:label "Rain Must Fall"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Recording1
+music_ontology:Recording1 rdf:type owl:NamedIndividual ,
+                                   music_ontology:Recording ;
+                          music_ontology:ha_produttore music_ontology:Rick_Rubin ;
+                          music_ontology:registra <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Perfect_(Traccia)> ,
+                                                  <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Shape_Of_You_(Traccia)> ;
+                          rdfs:comment "Momento atto a produrre una traccia musicale."@it ;
+                          rdfs:label "Sessione Registrazione"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Red_Canzian
+music_ontology:Red_Canzian rdf:type owl:NamedIndividual ,
+                                    music_ontology:Artista ;
+                           owl:sameAs <http://www.wikidata.org/entity/Q3931418> ;
+                           music_ontology:nazione "Italiana" ;
+                           music_ontology:nome "Red Canzian" ;
+                           rdfs:comment "Red Canzian, pseudonimo di Bruno Canzian (Quinto di Treviso, 30 novembre 1951), è un compositore, cantante, polistrumentista e produttore discografico italiano."@it ;
+                           rdfs:label "Red Canzian"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Requiem
+music_ontology:Requiem rdf:type owl:NamedIndividual ,
+                                music_ontology:Canzone ;
+                       music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Requiem_(Traccia)> ;
+                       music_ontology:compostaDa music_ontology:Wolfgang_Amadeus_Mozart ;
+                       music_ontology:titoloCanzone "Requiem"^^xsd:string ;
+                       rdfs:comment "La Messa di requiem in Re minore K 626 è l'ultima composizione di Wolfgang Amadeus Mozart."@it ;
+                       rdfs:label "Requiem"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Riccardo_Fogli
+music_ontology:Riccardo_Fogli rdf:type owl:NamedIndividual ,
+                                       music_ontology:Artista ;
+                              owl:sameAs <http://www.wikidata.org/entity/Q1236267> ;
+                              music_ontology:nazione "Italiana" ;
+                              music_ontology:nome "Riccardo Fogli" ;
+                              rdfs:comment "Riccardo Fogli (Pontedera, 21 ottobre 1947) è un cantautore e bassista italiano. Frontman e bassista dei Pooh tra il 1966 e il 1973 e tra il 2015 e il 2016, poi vincitore da solista del 32º Festival di Sanremo e di un'edizione del reality show Music Farm, ha inciso complessivamente 32 album."@it ;
+                              rdfs:label "Riccardo Fogli"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Rick_Rubin
+music_ontology:Rick_Rubin rdf:type owl:NamedIndividual ,
+                                   foaf:Person ;
+                          music_ontology:ha_produttore <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#The_Miracle_(Release)> ;
+                          music_ontology:nazione "Americana"^^xsd:string ;
+                          music_ontology:nome "Rick Rubin"^^xsd:string ;
+                          foaf:name "Rick Rubin"^^xsd:string ;
+                          rdfs:comment "Frederick Jay Rubin è un produttore discografico statunitense."@it ;
+                          rdfs:label "Rick Rubin"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Roby_Facchinetti
+music_ontology:Roby_Facchinetti rdf:type owl:NamedIndividual ,
+                                         music_ontology:Solo ;
+                                owl:sameAs <http://www.wikidata.org/entity/Q3939348> ;
+                                music_ontology:ha_etichetta music_ontology:Island_Records ;
+                                music_ontology:performa <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Il_segreto_del_tempo_(Traccia)> ,
+                                                        <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Perfect_(Traccia)> ;
+                                music_ontology:nazione "Italiana" ;
+                                music_ontology:nome "Roby Facchinetti" ;
+                                rdfs:comment "Roby Facchinetti, all'anagrafe Camillo Lorenzo Ferdinando Facchinetti (Bergamo, 1º maggio 1944), è un cantautore, compositore e tastierista italiano, noto principalmente per essere stato il tastierista dei Pooh."@it ;
+                                rdfs:label "Roby Facchinetti"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Roger_Taylor
+music_ontology:Roger_Taylor rdf:type owl:NamedIndividual ,
+                                     music_ontology:Artista ;
+                            owl:sameAs <http://www.wikidata.org/entity/Q15880> ;
+                            music_ontology:nazione "Inglese" ;
+                            music_ontology:nome "Roger Taylor" ;
+                            rdfs:comment "Roger Meddows-Taylor, meglio noto come Roger Taylor (King's Lynn, 26 luglio 1949), è un polistrumentista, cantautore e compositore britannico. È soprattutto noto per essere il batterista della rock band Queen. Fu grande amico del suo compagno di gruppo Freddie Mercury, conosciuto fin dai tempi della scuola."@it ;
+                            rdfs:label "Roger Taylor"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Scandal
+music_ontology:Scandal rdf:type owl:NamedIndividual ,
+                                music_ontology:Canzone ;
+                       music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Scandal_(Traccia)> ;
+                       music_ontology:compostaDa music_ontology:Queen ;
+                       music_ontology:scrittaDa music_ontology:Queen ;
+                       music_ontology:titoloCanzone "Scandal" ;
+                       rdfs:comment "Canzone dei Queen"@it ;
+                       rdfs:label "Scandal"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Shape_Of_You
+music_ontology:Shape_Of_You rdf:type owl:NamedIndividual ,
+                                     music_ontology:Canzone ;
+                            music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Shape_Of_You_(Traccia)> ;
+                            music_ontology:compostaDa music_ontology:Ed_Sheeran ;
+                            music_ontology:scrittaDa music_ontology:Ed_Sheeran ;
+                            music_ontology:titoloCanzone "Shape Of You" ;
+                            rdfs:comment "Canzone di Ed Sheeran"@it ;
+                            rdfs:label "Shape Of You"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Tastierista
+music_ontology:Tastierista rdf:type owl:NamedIndividual ,
+                                    music_ontology:Musicista ;
+                           rdfs:comment "l tastierista è il musicista che suona genericamente strumenti a tastiera come il pianoforte, l'organo o il sintetizzatore, ma di solito con il termine si indica un musicista che usa tastiere elettroniche, in grado di creare o ricreare diversi tipi di effetti."@it ;
+                           rdfs:label "Tastierista"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Tear_it_up
+music_ontology:Tear_it_up rdf:type owl:NamedIndividual ,
+                                   music_ontology:Canzone ;
+                          music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Tear_it_up_(Traccia)> ;
+                          music_ontology:compostaDa music_ontology:Queen ;
+                          music_ontology:scrittaDa music_ontology:Queen ;
+                          music_ontology:titoloCanzone "Tear it up" ;
+                          rdfs:comment "Canzone dei Queen"@it ;
+                          rdfs:label "Tear it up"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#The_Miracle
+music_ontology:The_Miracle rdf:type owl:NamedIndividual ,
+                                    music_ontology:Album ;
+                           owl:sameAs <http://www.wikidata.org/entity/Q390295> ;
+                           music_ontology:album_di music_ontology:Queen ;
+                           music_ontology:album_ha_traccia <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Party_(Traccia)> ,
+                                                           <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Rain_Must_Fall_(Traccia)> ,
+                                                           <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Scandal_(Traccia)> ,
+                                                           <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Was_It_All_Worth_It_(Traccia)> ;
+                           music_ontology:pubblicato_in <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#The_Miracle_(Release)> ;
+                           bag:size 5 ;
+                           music_ontology:haTitolo "The Miracle" ;
+                           music_ontology:numeroTracce 5 ;
+                           rdfs:comment "The Miracle è il tredicesimo album in studio della rock band britannica Queen, pubblicato per la prima volta il 22 maggio del 1989. Raggiunse la prima posizione nel Regno Unito, in Austria, in Germania, nei Paesi Bassi e in Svizzera, e la #24 della Billboard 200 negli Stati Uniti."@it ;
+                           rdfs:label "The Miracle"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#The_Works
+music_ontology:The_Works rdf:type owl:NamedIndividual ,
+                                  music_ontology:Album ;
+                         owl:sameAs <http://www.wikidata.org/entity/Q224641> ;
+                         music_ontology:album_ha_traccia <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Keep_Passing_the_Open_Windows_(Traccia)> ,
+                                                         <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Man_on_the_Prowl_(Traccia)> ,
+                                                         <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Tear_it_up_(Traccia)> ;
+                         music_ontology:pubblicato_in <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#The_Works_(Release)> ;
+                         bag:size 3 ;
+                         music_ontology:haTitolo "The Works" ;
+                         music_ontology:numeroTracce 3 ;
+                         rdfs:comment "The Works è l'undicesimo album in studio della rock band britannica Queen, pubblicato per la prima volta in LP il 27 febbraio 1984. Il disco prende il nome \"The Works\", da un'esclamazione di Roger Taylor, che alle prime sessioni aveva detto: «Let's give them the works!», per riscattare i consensi persi con Hot Space."@it ;
+                         rdfs:label "The Works"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Tommaso_Colliva
+music_ontology:Tommaso_Colliva rdf:type owl:NamedIndividual ,
+                                        foaf:Person ;
+                               music_ontology:nazione "Italiana"^^xsd:string ;
+                               music_ontology:nome "Tommaso Colliva"^^xsd:string ;
+                               foaf:name "Tommaso Colliva"^^xsd:string ;
+                               rdfs:comment "Tommaso Colliva è un produttore discografico italiano.Più volte nominato e vincitore di un Grammy Award."@it ;
+                               rdfs:label "Tommaso Colliva"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Was_it_all_worth_it
+music_ontology:Was_it_all_worth_it rdf:type owl:NamedIndividual ,
+                                            music_ontology:Canzone ;
+                                   music_ontology:canzone_realizzata_da <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Was_It_All_Worth_It_(Traccia)> ;
+                                   music_ontology:compostaDa music_ontology:Queen ;
+                                   music_ontology:scrittaDa music_ontology:Queen ;
+                                   music_ontology:titoloCanzone "Was It All Worth It" ;
+                                   rdfs:comment "Canzone dei Queen"@it ;
+                                   rdfs:label "Was it all worth it"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Wolfgang_Amadeus_Mozart
+music_ontology:Wolfgang_Amadeus_Mozart rdf:type owl:NamedIndividual ,
+                                                music_ontology:Artista ;
+                                       music_ontology:nazione "Austriaca"^^xsd:string ;
+                                       music_ontology:nome "Wolfgang Amadeus Mozart"^^xsd:string ;
+                                       foaf:name "Wolfgang Amadeus Mozart"^^xsd:string ;
+                                       rdfs:comment "Wolfgang Amadeus Mozart (Salisburgo, 27 gennaio 1756 – Vienna, 5 dicembre 1791) è stato un musicista austriaco a cui è universalmente riconosciuta la creazione di composizioni di straordinario valore artistico."@it ;
+                                       rdfs:label "Wolfgang Amadeus Mozart"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#All_Around_The_World_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#All_Around_The_World_(Traccia)> rdf:type owl:NamedIndividual ;
+                                                                                                   music_ontology:traccia_di_album music_ontology:Believe ;
+                                                                                                   music_ontology:traccia_precedente <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Be_Alright_(Traccia)> ;
+                                                                                                   music_ontology:traccia_realizza music_ontology:All_Around_The_World ;
+                                                                                                   music_ontology:haBPM 71 ;
+                                                                                                   music_ontology:haDurata 189 ;
+                                                                                                   music_ontology:haGenere "Indie" ;
+                                                                                                   music_ontology:haScala "Minore" ;
+                                                                                                   music_ontology:titoloTraccia "All Around the World" ;
+                                                                                                   rdfs:comment "Brano di Ed Sheeran"@it ;
+                                                                                                   rdfs:label "All Around The World (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Ancora_una_notte_insieme_(Release)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Ancora_una_notte_insieme_(Release)> rdf:type owl:NamedIndividual ,
+                                                                                                                music_ontology:Release ;
+                                                                                                       music_ontology:contiene music_ontology:Ancora_una_notte_insieme ;
+                                                                                                       music_ontology:pubblicata_da music_ontology:Atlanta_Records ;
+                                                                                                       music_ontology:data "2009-05-01"^^xsd:date ;
+                                                                                                       music_ontology:haSupporto "CD" ,
+                                                                                                                                 "Digitale" ;
+                                                                                                       music_ontology:nomeRelease "Ancora una notte insieme" ;
+                                                                                                       rdfs:comment "Release dell'album Ancora una notte insieme"@it ;
+                                                                                                       rdfs:label "Ancora una notte insieme (Release)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Anni_senza_fiato_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Anni_senza_fiato_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                                        music_ontology:Traccia ;
+                                                                                               music_ontology:traccia_di_album music_ontology:Ancora_una_notte_insieme ;
+                                                                                               music_ontology:traccia_precedente <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Brava_la_vita_(Traccia)> ;
+                                                                                               music_ontology:traccia_realizza music_ontology:Anni_Senza_Fiato ;
+                                                                                               music_ontology:haBPM 70 ;
+                                                                                               music_ontology:haDurata 321 ;
+                                                                                               music_ontology:haGenere "Pop" ;
+                                                                                               music_ontology:haScala "Minore" ;
+                                                                                               music_ontology:titoloTraccia "Anni senza fiato" ;
+                                                                                               rdfs:comment "Brano dei Pooh"@it ;
+                                                                                               rdfs:label "Anni senza fiato (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Be_Alright_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Be_Alright_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                                  music_ontology:Traccia ;
+                                                                                         music_ontology:traccia_di_album music_ontology:Believe ;
+                                                                                         music_ontology:traccia_realizza music_ontology:Be_Alright ;
+                                                                                         music_ontology:traccia_successiva <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#All_Around_The_World_(Traccia)> ;
+                                                                                         music_ontology:haBPM 84 ;
+                                                                                         music_ontology:haDurata 164 ;
+                                                                                         music_ontology:haGenere "Jazz" ;
+                                                                                         music_ontology:haScala "Maggiore" ;
+                                                                                         music_ontology:titoloTraccia "Be Alright" ;
+                                                                                         rdfs:comment "Brano di Justin Bieber"@it ;
+                                                                                         rdfs:label "Be Alright (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Beautiful_People_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Beautiful_People_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                                        music_ontology:Traccia ;
+                                                                                               music_ontology:ha_featuring music_ontology:Justin_Bieber ;
+                                                                                               music_ontology:traccia_di_album music_ontology:No._6_Collaborations_Project ;
+                                                                                               music_ontology:traccia_realizza music_ontology:Beautiful_People ;
+                                                                                               music_ontology:traccia_successiva <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Best_Part_Of_Me_(Traccia)> ;
+                                                                                               music_ontology:haBPM 82 ;
+                                                                                               music_ontology:haDurata 243 ;
+                                                                                               music_ontology:haGenere "Rock" ;
+                                                                                               music_ontology:haScala "Minore" ;
+                                                                                               music_ontology:titoloTraccia "Beautiful People" ;
+                                                                                               rdfs:comment "Brano di Ed Sheeran"@it ;
+                                                                                               rdfs:label "Beautiful People (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Believe_(Release)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Believe_(Release)> rdf:type owl:NamedIndividual ,
+                                                                                               music_ontology:Release ;
+                                                                                      music_ontology:contiene music_ontology:Believe ;
+                                                                                      music_ontology:pubblicata_da music_ontology:CBS ;
+                                                                                      music_ontology:data "2015-05-03"^^xsd:date ;
+                                                                                      music_ontology:haSupporto "CD" ,
+                                                                                                                "Digitale" ;
+                                                                                      music_ontology:nomeRelease "Believe" ;
+                                                                                      rdfs:comment "Release dell'album Believe"@it ;
+                                                                                      rdfs:label "Believe (Release)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Best_Part_Of_Me_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Best_Part_Of_Me_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                                       music_ontology:Traccia ;
+                                                                                              music_ontology:traccia_di_album music_ontology:No._6_Collaborations_Project ;
+                                                                                              music_ontology:traccia_precedente <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Beautiful_People_(Traccia)> ;
+                                                                                              music_ontology:traccia_realizza music_ontology:Best_Part_Of_Me ;
+                                                                                              music_ontology:haBPM 75 ;
+                                                                                              music_ontology:haDurata 321 ;
+                                                                                              music_ontology:haGenere "Pop" ;
+                                                                                              music_ontology:haScala "Maggiore" ;
+                                                                                              music_ontology:titoloTraccia "Best Part of Me" ;
+                                                                                              rdfs:comment "Brano di Ed Sheeran"@it ;
+                                                                                              rdfs:label "Best Part Of Me (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Brava_la_vita_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Brava_la_vita_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                                     music_ontology:Traccia ;
+                                                                                            music_ontology:traccia_di_album music_ontology:Ancora_una_notte_insieme ;
+                                                                                            music_ontology:traccia_precedente <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Donne_Italiane_(Traccia)> ;
+                                                                                            music_ontology:traccia_realizza music_ontology:Brava_la_vita ;
+                                                                                            music_ontology:haBPM 90 ;
+                                                                                            music_ontology:haDurata 154 ;
+                                                                                            music_ontology:haGenere "Pop" ;
+                                                                                            music_ontology:haScala "Minore" ;
+                                                                                            music_ontology:titoloTraccia "Brava la vita" ;
+                                                                                            rdfs:comment "Brano dei Pooh"@it ;
+                                                                                            rdfs:label "Brava la vita (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Castle_on_the_hill_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Castle_on_the_hill_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                                          music_ontology:Traccia ;
+                                                                                                 music_ontology:traccia_di_album <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#÷> ;
+                                                                                                 music_ontology:traccia_precedente <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Shape_Of_You_(Traccia)> ;
+                                                                                                 music_ontology:traccia_realizza music_ontology:Castle_On_The_Hill ;
+                                                                                                 music_ontology:traccia_successiva <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Perfect_(Traccia)> ;
+                                                                                                 music_ontology:haBPM 90 ;
+                                                                                                 music_ontology:haDurata 178 ;
+                                                                                                 music_ontology:haGenere "Pop" ;
+                                                                                                 music_ontology:haScala "Minore" ;
+                                                                                                 music_ontology:titoloTraccia "Castle on the Hill" ;
+                                                                                                 rdfs:comment "Brano di Ed Sheeran"@it ;
+                                                                                                 rdfs:label "Castle on the hill (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Dive_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Dive_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                            music_ontology:Traccia ;
+                                                                                   music_ontology:traccia_di_album <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#÷> ;
+                                                                                   music_ontology:traccia_realizza music_ontology:Dive ;
+                                                                                   music_ontology:traccia_successiva <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Eraser_(Traccia)> ;
+                                                                                   music_ontology:haBPM 81 ;
+                                                                                   music_ontology:haDurata 241 ;
+                                                                                   music_ontology:haGenere "Pop" ;
+                                                                                   music_ontology:haScala "Maggiore" ;
+                                                                                   music_ontology:titoloTraccia "Dive" ;
+                                                                                   rdfs:comment "Brano di Ed Sheeran"@it ;
+                                                                                   rdfs:label "Dive (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Donne_Italiane_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Donne_Italiane_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                                      music_ontology:Traccia ;
+                                                                                             music_ontology:traccia_di_album music_ontology:Ancora_una_notte_insieme ;
+                                                                                             music_ontology:traccia_precedente <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#La_mia_donna_(Traccia)> ;
+                                                                                             music_ontology:traccia_realizza music_ontology:Donne_Italiane ;
+                                                                                             music_ontology:traccia_successiva <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Brava_la_vita_(Traccia)> ;
+                                                                                             music_ontology:haBPM 71 ;
+                                                                                             music_ontology:haDurata 234 ;
+                                                                                             music_ontology:haGenere "Pop" ;
+                                                                                             music_ontology:haScala "Maggiore" ;
+                                                                                             music_ontology:titoloTraccia "Donne italiane" ;
+                                                                                             rdfs:comment "Brano dei Pooh"@it ;
+                                                                                             rdfs:label "Donne Italiane (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Eraser_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Eraser_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                              music_ontology:Traccia ;
+                                                                                     music_ontology:traccia_di_album <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#÷> ;
+                                                                                     music_ontology:traccia_precedente <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Dive_(Traccia)> ;
+                                                                                     music_ontology:traccia_realizza music_ontology:Eraser ;
+                                                                                     music_ontology:traccia_successiva <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Shape_Of_You_(Traccia)> ;
+                                                                                     music_ontology:haBPM 10 ;
+                                                                                     music_ontology:haDurata 132 ;
+                                                                                     music_ontology:haGenere "Pop" ;
+                                                                                     music_ontology:haScala "Minore" ;
+                                                                                     music_ontology:titoloTraccia "Eraser" ;
+                                                                                     rdfs:comment "Brano di Ed Sheeran"@it ;
+                                                                                     rdfs:label "Eraser (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Il_segreto_del_tempo_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Il_segreto_del_tempo_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                                            music_ontology:Traccia ;
+                                                                                                   music_ontology:performata_da music_ontology:Roby_Facchinetti ;
+                                                                                                   music_ontology:traccia_realizza music_ontology:Il_segreto_del_tempo ;
+                                                                                                   music_ontology:haBPM 90 ;
+                                                                                                   music_ontology:haDurata 145 ;
+                                                                                                   music_ontology:haGenere "Pop" ;
+                                                                                                   music_ontology:haScala "Maggiore" ;
+                                                                                                   music_ontology:titoloTraccia "Il segreto del tempo" ;
+                                                                                                   rdfs:comment "Brano di Roby Facchinetti"@it ;
+                                                                                                   rdfs:label "Il segreto del tempo (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Keep_Passing_the_Open_Windows_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Keep_Passing_the_Open_Windows_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                                                     music_ontology:Traccia ;
+                                                                                                            music_ontology:traccia_di_album music_ontology:The_Works ;
+                                                                                                            music_ontology:traccia_precedente <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Tear_it_up_(Traccia)> ;
+                                                                                                            music_ontology:traccia_realizza music_ontology:Keep_passing_the_open_windows ;
+                                                                                                            music_ontology:haBPM 81 ;
+                                                                                                            music_ontology:haDurata 189 ;
+                                                                                                            music_ontology:haGenere "Rock" ;
+                                                                                                            music_ontology:haScala "Maggiore" ;
+                                                                                                            music_ontology:titoloTraccia "Keep passing the open windows" ;
+                                                                                                            rdfs:comment "Brano dei Queen"@it ;
+                                                                                                            rdfs:label "Keep Passing the Open Windows (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#La_mia_donna_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#La_mia_donna_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                                    music_ontology:Traccia ;
+                                                                                           music_ontology:traccia_realizza music_ontology:La_mia_donna ;
+                                                                                           music_ontology:traccia_successiva <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Donne_Italiane_(Traccia)> ;
+                                                                                           music_ontology:haBPM 90 ;
+                                                                                           music_ontology:haDurata 241 ;
+                                                                                           music_ontology:haGenere "Rock" ;
+                                                                                           music_ontology:haScala "Maggiore" ;
+                                                                                           music_ontology:titoloTraccia "La mia donna" ;
+                                                                                           rdfs:comment "Brano dei Pooh"@it ;
+                                                                                           rdfs:label "La mia donna (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Man_on_the_Prowl_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Man_on_the_Prowl_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                                        music_ontology:Traccia ;
+                                                                                               music_ontology:traccia_realizza music_ontology:Man_on_the_prowl ;
+                                                                                               music_ontology:traccia_successiva <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Tear_it_up_(Traccia)> ;
+                                                                                               music_ontology:haBPM 90 ;
+                                                                                               music_ontology:haDurata 156 ;
+                                                                                               music_ontology:haGenere "Pop" ;
+                                                                                               music_ontology:haScala "Maggiore" ;
+                                                                                               music_ontology:titoloTraccia "Man on the Prowl" ;
+                                                                                               rdfs:comment "Brano dei Queen"@it ;
+                                                                                               rdfs:label "Man on the Prowl (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#My_Baby_does_me_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#My_Baby_does_me_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                                       music_ontology:Traccia ;
+                                                                                              music_ontology:traccia_realizza music_ontology:My_Baby_does_me ;
+                                                                                              music_ontology:haBPM 40 ;
+                                                                                              music_ontology:haDurata 143 ;
+                                                                                              music_ontology:haGenere "Pop" ;
+                                                                                              music_ontology:haScala "Minore" ;
+                                                                                              music_ontology:titoloTraccia "My Baby does me" ;
+                                                                                              rdfs:comment "Brano dei Queen"@it ;
+                                                                                              rdfs:label "My Baby Does me (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#No._6_Collaborations_Project_(Release)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#No._6_Collaborations_Project_(Release)> rdf:type owl:NamedIndividual ,
+                                                                                                                    music_ontology:Release ;
+                                                                                                           music_ontology:contiene <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#No._6_Collaborations_Project_(Release)> ;
+                                                                                                           music_ontology:pubblicata_da music_ontology:Island_Records ;
+                                                                                                           music_ontology:data "2019-11-08"^^xsd:date ;
+                                                                                                           music_ontology:haSupporto "Digitale" ,
+                                                                                                                                     "Vinile" ;
+                                                                                                           music_ontology:nomeRelease "No. 6 Collaborations Project" ;
+                                                                                                           rdfs:comment "Release dell'album No. 6 Collaborations Project"@it ;
+                                                                                                           rdfs:label "No. 6 Collaborations Project (Release)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Party_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Party_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                             music_ontology:Traccia ;
+                                                                                    music_ontology:traccia_di_album music_ontology:The_Miracle ;
+                                                                                    music_ontology:traccia_realizza music_ontology:Party ;
+                                                                                    music_ontology:traccia_successiva <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Rain_Must_Fall_(Traccia)> ;
+                                                                                    music_ontology:haBPM 74 ;
+                                                                                    music_ontology:haDurata 145 ;
+                                                                                    music_ontology:haGenere "Pop" ,
+                                                                                                            "Rock" ;
+                                                                                    music_ontology:haScala "Maggiore" ;
+                                                                                    music_ontology:titoloTraccia "Party" ;
+                                                                                    rdfs:comment "Brano dei Queen"@it ;
+                                                                                    rdfs:label "Party (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Perfect_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Perfect_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                               music_ontology:Traccia ;
+                                                                                      music_ontology:traccia_di_album <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#÷> ;
+                                                                                      music_ontology:traccia_precedente <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Castle_on_the_hill_(Traccia)> ;
+                                                                                      music_ontology:traccia_realizza music_ontology:Perfect ;
+                                                                                      music_ontology:haBPM 78 ;
+                                                                                      music_ontology:haDurata 430 ;
+                                                                                      music_ontology:haGenere "Pop" ;
+                                                                                      music_ontology:haScala "Maggiore" ;
+                                                                                      music_ontology:titoloTraccia "Perfect" ;
+                                                                                      rdfs:comment "Brano di Ed Sheeran"@it ;
+                                                                                      rdfs:label "Perfect (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Rain_Must_Fall_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Rain_Must_Fall_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                                      music_ontology:Traccia ;
+                                                                                             music_ontology:traccia_di_album music_ontology:The_Miracle ;
+                                                                                             music_ontology:traccia_precedente <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Party_(Traccia)> ;
+                                                                                             music_ontology:traccia_realizza music_ontology:Rain_Must_Fall ;
+                                                                                             music_ontology:traccia_successiva <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Scandal_(Traccia)> ;
+                                                                                             music_ontology:haBPM 86 ;
+                                                                                             music_ontology:haDurata 139 ;
+                                                                                             music_ontology:haGenere "Pop" ;
+                                                                                             music_ontology:haScala "Maggiore" ;
+                                                                                             music_ontology:titoloTraccia "Rain Must Fall" ;
+                                                                                             rdfs:comment "Brano dei Queen"@it ;
+                                                                                             rdfs:label "Rain Must Fall (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Requiem_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Requiem_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                               music_ontology:Traccia ;
+                                                                                      music_ontology:performata_da music_ontology:Hanover_Band ;
+                                                                                      music_ontology:traccia_realizza music_ontology:Requiem ;
+                                                                                      music_ontology:haBPM 99 ;
+                                                                                      music_ontology:haDurata 342 ;
+                                                                                      music_ontology:haGenere "Classica"^^xsd:string ;
+                                                                                      music_ontology:haScala "Minore"^^xsd:string ;
+                                                                                      music_ontology:titoloTraccia "Requiem"^^xsd:string ;
+                                                                                      rdfs:comment "Brano performato dall'Hanover Band"@it ;
+                                                                                      rdfs:label "Requiem (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Scandal_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Scandal_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                               music_ontology:Traccia ;
+                                                                                      music_ontology:traccia_di_album music_ontology:The_Miracle ;
+                                                                                      music_ontology:traccia_precedente <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Rain_Must_Fall_(Traccia)> ;
+                                                                                      music_ontology:traccia_realizza music_ontology:Scandal ;
+                                                                                      music_ontology:traccia_successiva <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Was_It_All_Worth_It_(Traccia)> ;
+                                                                                      music_ontology:haBPM 51 ;
+                                                                                      music_ontology:haDurata 187 ;
+                                                                                      music_ontology:haGenere "Pop" ,
+                                                                                                              "Rock" ;
+                                                                                      music_ontology:haScala "Maggiore" ;
+                                                                                      music_ontology:titoloTraccia "Scandal" ;
+                                                                                      rdfs:comment "Brano dei Queen"@it ;
+                                                                                      rdfs:label "Scandal (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Shape_Of_You_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Shape_Of_You_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                                    music_ontology:Traccia ;
+                                                                                           music_ontology:traccia_di_album <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#÷> ;
+                                                                                           music_ontology:traccia_precedente <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Eraser_(Traccia)> ;
+                                                                                           music_ontology:traccia_realizza music_ontology:Shape_Of_You ;
+                                                                                           music_ontology:traccia_successiva <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Castle_on_the_hill_(Traccia)> ;
+                                                                                           music_ontology:haBPM 30 ;
+                                                                                           music_ontology:haDurata 210 ;
+                                                                                           music_ontology:haGenere "Pop" ;
+                                                                                           music_ontology:haScala "Minore" ;
+                                                                                           music_ontology:titoloTraccia "Shape Of You" ;
+                                                                                           rdfs:comment "Brano di Ed Sheeran"@it ;
+                                                                                           rdfs:label "Shape Of You (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Stefano_D'Orazio
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Stefano_D'Orazio> rdf:type owl:NamedIndividual ,
+                                                                                              music_ontology:Artista ;
+                                                                                     owl:sameAs <http://www.wikidata.org/entity/Q3972445> ;
+                                                                                     music_ontology:nazione "Italiana" ;
+                                                                                     music_ontology:nome "Stefano D'Orazio" ;
+                                                                                     rdfs:comment "Stefano D'Orazio (Roma, 12 settembre 1948) è un batterista, paroliere, cantante e regista italiano. Batteria, voce e flauto traverso dei Pooh dal 1971, è autore di una parte dei testi delle canzoni del gruppo, del quale in seguito è divenuto anche responsabile amministrativo"@it ;
+                                                                                     rdfs:label "Stefano D'Orazio"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Tear_it_up_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Tear_it_up_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                                  music_ontology:Traccia ;
+                                                                                         music_ontology:traccia_di_album music_ontology:The_Works ;
+                                                                                         music_ontology:traccia_precedente <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Man_on_the_Prowl_(Traccia)> ;
+                                                                                         music_ontology:traccia_realizza music_ontology:Tear_it_up ;
+                                                                                         music_ontology:traccia_successiva <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Keep_Passing_the_Open_Windows_(Traccia)> ;
+                                                                                         music_ontology:haBPM 56 ;
+                                                                                         music_ontology:haDurata 172 ;
+                                                                                         music_ontology:haGenere "Rock" ;
+                                                                                         music_ontology:haScala "Minore" ;
+                                                                                         music_ontology:titoloTraccia "Tear it up" ;
+                                                                                         rdfs:comment "Brano dei Queen"@it ;
+                                                                                         rdfs:label "Tear it up (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#The_Miracle_(Release)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#The_Miracle_(Release)> rdf:type owl:NamedIndividual ,
+                                                                                                   music_ontology:Release ;
+                                                                                          music_ontology:contiene music_ontology:The_Miracle ;
+                                                                                          music_ontology:pubblicata_da music_ontology:Parlophone ;
+                                                                                          music_ontology:data "1989-05-21"^^xsd:date ;
+                                                                                          music_ontology:haSupporto "CD" ,
+                                                                                                                    "Digitale" ,
+                                                                                                                    "Vinile" ;
+                                                                                          music_ontology:nomeRelease "The Miracle" ;
+                                                                                          rdfs:comment "Release dell'album The Miracle"@it ;
+                                                                                          rdfs:label "The Miracle (Release)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#The_Works_(Release)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#The_Works_(Release)> rdf:type owl:NamedIndividual ,
+                                                                                                 music_ontology:Release ;
+                                                                                        music_ontology:contiene music_ontology:The_Works ;
+                                                                                        music_ontology:pubblicata_da music_ontology:Electric_and_Musical_Industries ;
+                                                                                        music_ontology:data "1984-02-27"^^xsd:date ;
+                                                                                        music_ontology:haSupporto "CD" ;
+                                                                                        music_ontology:nomeRelease "The Works" ;
+                                                                                        rdfs:comment "Release dell'album The Works"@it ;
+                                                                                        rdfs:label "The Works (Release)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Was_It_All_Worth_It_(Traccia)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Was_It_All_Worth_It_(Traccia)> rdf:type owl:NamedIndividual ,
+                                                                                                           music_ontology:Traccia ;
+                                                                                                  music_ontology:traccia_di_album music_ontology:The_Miracle ;
+                                                                                                  music_ontology:traccia_precedente <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Scandal_(Traccia)> ;
+                                                                                                  music_ontology:traccia_realizza music_ontology:Was_it_all_worth_it ;
+                                                                                                  music_ontology:haBPM 89 ;
+                                                                                                  music_ontology:haDurata 131 ;
+                                                                                                  music_ontology:haGenere "Rock" ;
+                                                                                                  music_ontology:haScala "Maggiore" ;
+                                                                                                  music_ontology:titoloTraccia "Was it all worth it" ;
+                                                                                                  rdfs:comment "Brano dei Queen"@it ;
+                                                                                                  rdfs:label "Was It All Worth It (Traccia)"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#÷
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#÷> rdf:type owl:NamedIndividual ,
+                                                                               music_ontology:Album ;
+                                                                      owl:sameAs <http://www.wikidata.org/entity/Q28133332> ;
+                                                                      bag:hasItem <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Shape_Of_You_(Traccia)> ;
+                                                                      music_ontology:album_di music_ontology:Ed_Sheeran ;
+                                                                      music_ontology:album_ha_traccia <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Castle_on_the_hill_(Traccia)> ,
+                                                                                                      <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Dive_(Traccia)> ,
+                                                                                                      <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Eraser_(Traccia)> ,
+                                                                                                      <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Perfect_(Traccia)> ,
+                                                                                                      <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#Shape_Of_You_(Traccia)> ;
+                                                                      music_ontology:pubblicato_in <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#÷_(Release)> ;
+                                                                      bag:size 5 ;
+                                                                      music_ontology:haTitolo "÷" ;
+                                                                      music_ontology:numeroTracce 5 ;
+                                                                      rdfs:comment "Il 1º gennaio 2017 ha rivelato su Twitter la pubblicazione di nuova musica prevista cinque giorni più tardi. Il 6 gennaio sono stati infatti pubblicati i singoli Castle on the Hill e Shape of You. Lo stesso giorno, in un'intervista radiofonica a BBC Radio 1, il cantante ha confermato le speculazioni riguardo al titolo dell'album, ÷, e successivamente ha comunicato che sarebbe stato pubblicato il 3 marzo 2017."@it ;
+                                                                      rdfs:label "÷"@it .
+
+
+###  http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#÷_(Release)
+<http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#÷_(Release)> rdf:type owl:NamedIndividual ,
+                                                                                         music_ontology:Release ;
+                                                                                music_ontology:contiene <http://www.semanticweb.org/bruno/ontologies/2020/1/music_ontology#÷> ;
+                                                                                music_ontology:pubblicata_da music_ontology:Asylum_Records ;
+                                                                                music_ontology:data "2015-12-12"^^xsd:date ;
+                                                                                music_ontology:haSupporto "CD" ,
+                                                                                                          "Digitale" ;
+                                                                                music_ontology:nomeRelease "÷" ;
+                                                                                rdfs:comment "Release dell'album ÷"@it ;
+                                                                                rdfs:label "÷ (Release)"@it .
+
+
+###  http://www.wikidata.org/entity/Q1236267
+<http://www.wikidata.org/entity/Q1236267> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q1242174
+<http://www.wikidata.org/entity/Q1242174> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q15862
+<http://www.wikidata.org/entity/Q15862> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q15869
+<http://www.wikidata.org/entity/Q15869> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q15873
+<http://www.wikidata.org/entity/Q15873> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q15880
+<http://www.wikidata.org/entity/Q15880> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q183412
+<http://www.wikidata.org/entity/Q183412> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q190585
+<http://www.wikidata.org/entity/Q190585> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q192103
+<http://www.wikidata.org/entity/Q192103> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q1998195
+<http://www.wikidata.org/entity/Q1998195> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q208909
+<http://www.wikidata.org/entity/Q208909> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q224641
+<http://www.wikidata.org/entity/Q224641> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q28133332
+<http://www.wikidata.org/entity/Q28133332> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q34086
+<http://www.wikidata.org/entity/Q34086> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q3615262
+<http://www.wikidata.org/entity/Q3615262> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q3712505
+<http://www.wikidata.org/entity/Q3712505> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q390295
+<http://www.wikidata.org/entity/Q390295> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q3931418
+<http://www.wikidata.org/entity/Q3931418> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q3939348
+<http://www.wikidata.org/entity/Q3939348> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q3972445
+<http://www.wikidata.org/entity/Q3972445> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q47447
+<http://www.wikidata.org/entity/Q47447> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q4816207
+<http://www.wikidata.org/entity/Q4816207> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q49462460
+<http://www.wikidata.org/entity/Q49462460> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q64000750
+<http://www.wikidata.org/entity/Q64000750> rdf:type owl:NamedIndividual .
+
+
+###  http://www.wikidata.org/entity/Q815612
+<http://www.wikidata.org/entity/Q815612> rdf:type owl:NamedIndividual .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
